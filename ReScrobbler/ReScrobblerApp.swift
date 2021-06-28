@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+let apiKey = "b33ac675651abec66c08e3d4cba063c6"
+let baseUrl = "https://ws.audioscrobbler.com/2.0/?api_key=" + apiKey + "&format=json&"
+
+let defaults = UserDefaults.standard
+
 extension UserDefaults {
     static func resetDefaults() {
         if let bundleID = Bundle.main.bundleIdentifier {
@@ -14,6 +19,78 @@ extension UserDefaults {
         }
     }
 }
+
+extension Int {
+    var roundedWithAbbreviations: String {
+        /**
+         Round numbers and add "M" or "K" (millions and thousands)
+         at the end of each number.
+         */
+        
+        let number = Double(self)
+        let thousand = number / 1000
+        let million = number / 1000000
+        if million >= 1.0 {
+            return "\(round(million*10)/10)M"
+        }
+        else if thousand >= 1.0 {
+            return "\(round(thousand*10)/10)K"
+        }
+        else {
+            return "\(self)"
+        }
+    }
+}
+
+struct NavigationLazyView<Content: View>: View {
+    /**
+     Making NavigationLink lazy.
+     So it won't load all views when app starts.
+     */
+    
+    let build: () -> Content
+    init(_ build: @autoclosure @escaping () -> Content) {
+        self.build = build
+    }
+    var body: Content {
+        build()
+    }
+}
+
+
+enum ApiError: Error {
+    /**
+     Dummy throwable error.
+     */
+    
+    case connectionFailure
+}
+
+
+func getJSONFromUrl(_ method : String) throws -> Data{
+    /**
+     Getting JSON from Internet
+     */
+    
+    print("[[[::URL::]]] >> \(baseUrl + method)")
+    
+    guard let data = try? Data(contentsOf: URL(string: (baseUrl + method))!) else {
+        throw ApiError.connectionFailure
+    }
+    return data
+}
+
+
+func scream() -> String {
+    /**
+     Dummy function for debugging.
+     */
+    
+    let randomDebugValue = arc4random()
+    print("[SCREAM -> \(randomDebugValue)]")
+    return " [SCREAM -> \(randomDebugValue)] "
+}
+
 
 @main
 struct ReScrobblerApp: App {
@@ -43,7 +120,9 @@ struct ReScrobblerApp: App {
             
         }
     }
+    
     func toggleSidebar() {
         NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
     }
+    
 }
