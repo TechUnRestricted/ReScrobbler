@@ -7,11 +7,20 @@
 
 import SwiftUI
 
+extension UserDefaults {
+    static func resetDefaults() {
+        if let bundleID = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: bundleID)
+        }
+    }
+}
+
 @main
 struct ReScrobblerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView().toolbar {
+            ContentView()
+                .toolbar {
                 ToolbarItem(placement: .navigation) {
                     Button(action: toggleSidebar, label: {
                         Image(systemName: "sidebar.left")
@@ -19,6 +28,17 @@ struct ReScrobblerApp: App {
                 }
             }
             
+            
+        }.commands {
+            CommandGroup(after: .systemServices) {
+                Button(action: {
+                    UserDefaults.resetDefaults()
+                    print("Reset complete.")
+                }) {
+                    Text("Reset all Settings")
+                    
+                }
+            }
             
         }
     }

@@ -9,7 +9,14 @@ import SwiftUI
 let apiKey = "b33ac675651abec66c08e3d4cba063c6"
 let baseUrl = "https://ws.audioscrobbler.com/2.0/?api_key=" + apiKey + "&format=json&"
 
+let defaults = UserDefaults.standard
+
 struct NavigationLazyView<Content: View>: View {
+    /**
+     Making NavigationLink lazy.
+     So it won't load all views when app starts.
+     */
+    
     let build: () -> Content
     init(_ build: @autoclosure @escaping () -> Content) {
         self.build = build
@@ -23,6 +30,11 @@ struct NavigationLazyView<Content: View>: View {
 
 extension Int {
     var roundedWithAbbreviations: String {
+        /**
+         Round numbers and add "M" or "K" (millions and thousands)
+         at the end of each number.
+         */
+        
         let number = Double(self)
         let thousand = number / 1000
         let million = number / 1000000
@@ -39,12 +51,20 @@ extension Int {
 }
 
 enum ApiError: Error {
+    /**
+     Dummy throwable error.
+     */
+    
     case connectionFailure
 }
 
 
 
 func getJSONFromUrl(_ method : String) throws -> Data{
+    /**
+     Getting JSON from Internet
+     */
+    
     print("[[[::URL::]]] >> \(baseUrl + method)")
     
     guard let data = try? Data(contentsOf: URL(string: (baseUrl + method))!) else {
@@ -54,71 +74,87 @@ func getJSONFromUrl(_ method : String) throws -> Data{
 }
 
 func scream() -> String {
-    print("[SCREAM]")
-    return " [Scream] "
+    /**
+     Dummy function for debugging.
+     */
+    
+    let randomDebugValue = arc4random()
+    print("[SCREAM -> \(randomDebugValue)]")
+    return " [SCREAM -> \(randomDebugValue)] "
 }
 
 /*
  [START]: Artists Top
  */
+
+
 class ArtistsTopData: ObservableObject {
+    /**
+     Observable Object for storing data from ArtistsTopView
+     */
+    
     @Published var score = 0
     @Published var savedJson : getTopArtists.jsonStruct?
-    /*
-     @Published var artist : [String] = []
-     @Published var listenersCount : [Int] = []
-     @Published var playCount : [Int] = []
-     @Published var genres : [[String]] = []
-     */
 }
 
 struct Test: View {
+    /**
+     Dummy view for debugging.
+     */
+    
     var body: some View {
-        let columns = [
-                GridItem(.fixed(160)),
-                GridItem(.fixed(160))
-            ]
-        VStack(){
-        LazyVGrid(columns: columns, content: {
-            /*@START_MENU_TOKEN@*/Text("Placeholder")/*@END_MENU_TOKEN@*/
-            /*@START_MENU_TOKEN@*/Text("Placeholder")/*@END_MENU_TOKEN@*/
-        })
-    }
+        Text("Dummy View")
     }
     
 }
 
 struct ArtistsTopView: View {
     @EnvironmentObject var data: ArtistsTopData
-    init() {
-        print("[Initializing] ArtistsTopView")
-    }
+
     var body: some View {
         ScrollView(.vertical){
             VStack{
                 VStack(){}.onAppear(perform: {
-                    if ((data.savedJson != nil)){
+                    
+                    //Checking if JSON is saved to RAM
+                    if ((data.savedJson != nil) ){
                         print("JSON was used before")
                     }
                     else{
-                        print("JSON wasn't used befire. Fetching data...")
-                        data.savedJson = try! JSONDecoder().decode(getTopArtists.jsonStruct.self, from:getJSONFromUrl("method=chart.gettopartists&limit=100"))
+                        print("JSON wasn't used before. Fetching data...")
+                        
+                        //Checking if JSON was saved to App Defaults
+                        if let savedArtistsTopDefaults = defaults.object(forKey: "SavedArtistsTop") as? Data {
+                            if let loadedArtistsTopDefaults = try? JSONDecoder().decode(getTopArtists.jsonStruct.self, from: savedArtistsTopDefaults) {
+                                print("Loading from Defaults")
+                                data.savedJson = loadedArtistsTopDefaults
+                            }
+                        }
+                        else{
+                            print("Found nothing in Defaults. Fetching info from Internet.")
+                            
+                            //Getting JSON from Internet
+                            if let jsonFromInternet = try? JSONDecoder().decode(getTopArtists.jsonStruct.self, from:getJSONFromUrl("method=chart.gettopartists&limit=100")){
+                                data.savedJson = jsonFromInternet
+                                
+                                print("Successfully got info from Internet")
+                                if let encoded = try? JSONEncoder().encode(data.savedJson) {
+                                    defaults.set(encoded, forKey: "SavedArtistsTop")
+                                }
+                                
+                            }
+                            else{
+                                print("An error has occured while getting data from Internet.")
+                            }
+                        }
+
                     }
                 })
                 
+                //Checking if we have JSON loaded to RAM
                 if ((data.savedJson != nil)){
                     let jsonSimplified = data.savedJson!.artists!.artist!
-                    /*
-                     List(0..<5) { item in
-                                 Image(systemName: "photo")
-                                 VStack(alignment: .leading) {
-                                     Text("Simon Ng")
-                                     Text("Founder of AppCoda")
-                                         .font(.subheadline)
-                                         .color(.gray)
-                                 }
-                             }
-                     */
+                    
                     ForEach(0 ..< (jsonSimplified.count)) { value in
                         ArtistsTopEntry(
                             index: value+1,
@@ -144,10 +180,7 @@ struct ArtistsTopView: View {
                     Text("Can't load data")
                 }
                 
-                /*ForEach(0 ..< (data.savedJson!.artists?.artist?.count)!) { value in
-                 Text((data.savedJson?.artists?.artist![value].name)!)
-                 }
-                 */
+                
             }
         }
     }
@@ -158,7 +191,7 @@ struct ArtistsTopView: View {
  */
 
 /*
- [START]: Artists Top
+ [START]: Tracks Top
  */
 class TracksTopData: ObservableObject {
     @Published var score = 0
@@ -180,7 +213,7 @@ struct TracksTopView: View {
     
 }
 /*
- [END]: Artists Top
+ [END]: Tracks Top
  */
 
 struct ContentView: View {
@@ -236,12 +269,15 @@ struct ArtistsTopEntry: View {
                 Text(String(index))
                     .font(.title2)
                     .padding()
+                    .frame(width: 80)
                 Group{
                     Text(artist).bold()
+                        .frame(width: 200, alignment: .leading)
                     Text("Listeners: " + listenersCount)
+                        .frame(width: 200, alignment: .leading)
                     Text("Play Count: " + playCount)
+                        .frame(width: 200, alignment: .leading)
                 }.padding()
-                .frame(maxWidth: .infinity)
             }.lineLimit(2)
             Divider()
         }
