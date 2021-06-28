@@ -20,7 +20,8 @@ struct ReScrobblerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .toolbar {
+            //Test()
+            .toolbar {
                 ToolbarItem(placement: .navigation) {
                     Button(action: toggleSidebar, label: {
                         Image(systemName: "sidebar.left")

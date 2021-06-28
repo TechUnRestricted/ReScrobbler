@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D64F79942689FA4300DE053E /* getTopTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F79932689FA4300DE053E /* getTopTracks.swift */; };
 		D66DA2BD268246B400D12BB7 /* ReScrobblerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66DA2BC268246B400D12BB7 /* ReScrobblerApp.swift */; };
 		D66DA2BF268246B400D12BB7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66DA2BE268246B400D12BB7 /* ContentView.swift */; };
 		D66DA2C1268246B700D12BB7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D66DA2C0268246B700D12BB7 /* Assets.xcassets */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D64F79932689FA4300DE053E /* getTopTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getTopTracks.swift; sourceTree = "<group>"; };
 		D66DA2B9268246B400D12BB7 /* ReScrobbler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReScrobbler.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D66DA2BC268246B400D12BB7 /* ReScrobblerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReScrobblerApp.swift; sourceTree = "<group>"; };
 		D66DA2BE268246B400D12BB7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				D66DA2D126824DFD00D12BB7 /* getTopArtists.swift */,
+				D64F79932689FA4300DE053E /* getTopTracks.swift */,
 			);
 			path = "Json Structures";
 			sourceTree = "<group>";
@@ -151,6 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D64F79942689FA4300DE053E /* getTopTracks.swift in Sources */,
 				D66DA2BF268246B400D12BB7 /* ContentView.swift in Sources */,
 				D66DA2D226824DFD00D12BB7 /* getTopArtists.swift in Sources */,
 				D66DA2BD268246B400D12BB7 /* ReScrobblerApp.swift in Sources */,
