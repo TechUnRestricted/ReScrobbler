@@ -15,6 +15,8 @@
 		D66DA2C1268246B700D12BB7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D66DA2C0268246B700D12BB7 /* Assets.xcassets */; };
 		D66DA2C4268246B700D12BB7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D66DA2C3268246B700D12BB7 /* Preview Assets.xcassets */; };
 		D66DA2D226824DFD00D12BB7 /* getTopArtists.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66DA2D126824DFD00D12BB7 /* getTopArtists.swift */; };
+		D6D30BBB268A66AB00936133 /* getTopTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D30BBA268A66AB00936133 /* getTopTags.swift */; };
+		D6D30BBD268A677100936133 /* TagsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D30BBC268A677100936133 /* TagsTopView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,8 @@
 		D66DA2C5268246B700D12BB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D66DA2C6268246B700D12BB7 /* ReScrobbler.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReScrobbler.entitlements; sourceTree = "<group>"; };
 		D66DA2D126824DFD00D12BB7 /* getTopArtists.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = getTopArtists.swift; sourceTree = "<group>"; };
+		D6D30BBA268A66AB00936133 /* getTopTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getTopTags.swift; sourceTree = "<group>"; };
+		D6D30BBC268A677100936133 /* TagsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsTopView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,7 @@
 			children = (
 				D64F7997268A07A300DE053E /* ArtistsTopView.swift */,
 				D64F7999268A081700DE053E /* TracksTopView.swift */,
+				D6D30BBC268A677100936133 /* TagsTopView.swift */,
 			);
 			path = Chart;
 			sourceTree = "<group>";
@@ -103,6 +108,7 @@
 			children = (
 				D66DA2D126824DFD00D12BB7 /* getTopArtists.swift */,
 				D64F79932689FA4300DE053E /* getTopTracks.swift */,
+				D6D30BBA268A66AB00936133 /* getTopTags.swift */,
 			);
 			path = "Json Structures";
 			sourceTree = "<group>";
@@ -177,10 +183,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D64F79942689FA4300DE053E /* getTopTracks.swift in Sources */,
+				D6D30BBD268A677100936133 /* TagsTopView.swift in Sources */,
 				D66DA2BF268246B400D12BB7 /* ContentView.swift in Sources */,
 				D64F7998268A07A300DE053E /* ArtistsTopView.swift in Sources */,
 				D66DA2D226824DFD00D12BB7 /* getTopArtists.swift in Sources */,
 				D64F799A268A081700DE053E /* TracksTopView.swift in Sources */,
+				D6D30BBB268A66AB00936133 /* getTopTags.swift in Sources */,
 				D66DA2BD268246B400D12BB7 /* ReScrobblerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

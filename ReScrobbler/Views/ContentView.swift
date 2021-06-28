@@ -23,15 +23,19 @@ struct ContentView: View {
     @State private var selection: String? = "Tracks"
     @StateObject var artistsTopDataState = ArtistsTopData()
     @StateObject var tracksTopDataState = TracksTopData()
+    @StateObject var tagsTopDataState = TagsTopData()
+
     
     var body: some View {
         
         NavigationView {
             List (selection: $selection) {
-                Section(header: Text("Top")) {
+                Section(header: Text("Chart")) {
                     NavigationLink(
                         destination: NavigationLazyView(ArtistsTopView()).environmentObject(artistsTopDataState),
                         label: {
+                            Image(systemName: "music.mic")
+                                .frame(width: 20)
                             Text("Artists")
                         }
                     ).tag("Artists")
@@ -39,9 +43,20 @@ struct ContentView: View {
                     NavigationLink(
                         destination: NavigationLazyView(TracksTopView()).environmentObject(tracksTopDataState),
                         label: {
+                            Image(systemName: "music.note")
+                                .frame(width: 20)
                             Text("Tracks")
                         })
                 }.tag("Tracks")
+                
+                NavigationLink(
+                    destination: NavigationLazyView(TagsTopView()).environmentObject(tagsTopDataState),
+                    label: {
+                        Image(systemName: "tag")
+                            .frame(width: 20)
+                        Text("Tags")
+                    })
+            }.tag("Tags")
                 
             }.listStyle(SidebarListStyle())
             
@@ -49,7 +64,7 @@ struct ContentView: View {
         }
         
     }
-}
+
 
 
 

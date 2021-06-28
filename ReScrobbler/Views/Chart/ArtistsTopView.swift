@@ -123,7 +123,7 @@ struct ArtistsTopEntry: View {
                     Text("Play Count: " + playCount)
                         .frame(width: 200, alignment: .leading)
                 }.padding()
-            }.lineLimit(2)
+            }.lineLimit(1)
             Divider()
         }
     }

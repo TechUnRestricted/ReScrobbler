@@ -1,5 +1,5 @@
 //
-//  TracksTopView.swift
+//  TagsTopView.swift
 //  ReScrobbler
 //
 //  Created on 28.06.2021.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-class TracksTopData: ObservableObject {
-    @Published var savedJson : getTopTracks.jsonStruct?
+class TagsTopData: ObservableObject {
+    @Published var savedJson : getTopTags.jsonStruct?
 }
 
-struct TracksTopView: View {
-    @EnvironmentObject var data: TracksTopData
+struct TagsTopView: View {
+    @EnvironmentObject var data: TagsTopData
     
     var body: some View {
         ScrollView(.vertical){
@@ -27,22 +27,22 @@ struct TracksTopView: View {
                         print("JSON wasn't used before. Fetching data...")
                         
                         //Checking if JSON was saved to App Defaults
-                        if let savedTracksTopDefaults = defaults.object(forKey: "SavedTracksTop") as? Data {
-                            if let loadedTracksTopDefaults = try? JSONDecoder().decode(getTopTracks.jsonStruct.self, from: savedTracksTopDefaults) {
+                        if let savedTagsTopDefaults = defaults.object(forKey: "SavedTagsTop") as? Data {
+                            if let loadedTagsTopDefaults = try? JSONDecoder().decode(getTopTags.jsonStruct.self, from: savedTagsTopDefaults) {
                                 print("Loading from Defaults")
-                                data.savedJson = loadedTracksTopDefaults
+                                data.savedJson = loadedTagsTopDefaults
                             }
                         }
                         else{
                             print("Found nothing in Defaults. Fetching info from Internet.")
                             
                             //Getting JSON from Internet
-                            if let jsonFromInternet = try? JSONDecoder().decode(getTopTracks.jsonStruct.self, from:getJSONFromUrl("method=chart.gettoptracks&limit=100")){
+                            if let jsonFromInternet = try? JSONDecoder().decode(getTopTags.jsonStruct.self, from:getJSONFromUrl("method=chart.gettoptags&limit=100")){
                                 data.savedJson = jsonFromInternet
                                 
                                 print("Successfully got info from Internet")
                                 if let encoded = try? JSONEncoder().encode(data.savedJson) {
-                                    defaults.set(encoded, forKey: "SavedTracksTop")
+                                    defaults.set(encoded, forKey: "SavedTagsTop")
                                 }
                                 
                             }
@@ -54,14 +54,12 @@ struct TracksTopView: View {
                     }
                 })
                 if ((data.savedJson != nil)){
-                    let jsonSimplified = data.savedJson!.tracks!.track!
+                    let jsonSimplified = data.savedJson!.tags!.tag!
                     ForEach(0 ..< (jsonSimplified.count)) { value in
-                        TracksTopEntry(
+                        TagsTopEntry(
                             index: value+1,
-                            track: jsonSimplified[value].name!,
-                            artist: jsonSimplified[value].artist!.name!,
-                            listenersCount: Int(jsonSimplified[value].listeners!)!.roundedWithAbbreviations,
-                            playCount: Int(jsonSimplified[value].playcount!)!.roundedWithAbbreviations
+                            tag: jsonSimplified[value].name!
+                            
                         )
                         .contentShape(Rectangle())
                         .onTapGesture {
@@ -85,23 +83,18 @@ struct TracksTopView: View {
                 
             }
         }
+        
     }
-    
 }
-
-struct TracksTopEntry: View {
+struct TagsTopEntry: View {
     var index: Int = 0
-    var track: String = "Unknown Track"
-    var artist: String = "Unknown Artist"
-    var listenersCount: String = "0"
-    var playCount: String = "0"
+    var tag: String = "Unknown Tag"
     
-    init(index: Int, track: String, artist: String, listenersCount: String, playCount: String) {
+    
+    init(index: Int, tag: String) {
         self.index = index
-        self.track = track
-        self.artist = artist
-        self.listenersCount = listenersCount
-        self.playCount = playCount
+        self.tag = tag
+        
     }
     
     var body: some View {
@@ -110,27 +103,16 @@ struct TracksTopEntry: View {
             HStack{
                 Text(String(index))
                     .font(.title2)
-                    .padding()
                     .frame(width: 80)
-                Group{
-                    VStack{
-                        Group{
-                            Text(track)
-                                .bold()
-                            Text(artist)
-                                .fontWeight(.light)
-                        }
-                        .frame(width: 200, alignment: .leading)
-                    }
-                    
-                    Text("Listeners: " + listenersCount)
-                        .frame(width: 200, alignment: .leading)
-                    Text("Play Count: " + playCount)
-                        .frame(width: 200, alignment: .leading)
-                }.padding()
-            }.lineLimit(1)
-            Divider()
-        }
+                Text(tag)
+                    .bold()
+                    .frame(width: 600, alignment: .leading)
+            }.padding()
+        }.lineLimit(1)
+        Divider()
     }
 }
+
+
+
 
