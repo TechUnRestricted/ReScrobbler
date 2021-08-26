@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0405219726D576EE00BFF894 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 0405219626D576EE00BFF894 /* Introspect */; };
 		D64F79942689FA4300DE053E /* getTopTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F79932689FA4300DE053E /* getTopTracks.swift */; };
 		D64F7998268A07A300DE053E /* ArtistsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F7997268A07A300DE053E /* ArtistsTopView.swift */; };
 		D64F799A268A081700DE053E /* TracksTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F7999268A081700DE053E /* TracksTopView.swift */; };
@@ -40,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0405219726D576EE00BFF894 /* Introspect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,6 +131,9 @@
 			dependencies = (
 			);
 			name = ReScrobbler;
+			packageProductDependencies = (
+				0405219626D576EE00BFF894 /* Introspect */,
+			);
 			productName = ReScrobbler;
 			productReference = D66DA2B9268246B400D12BB7 /* ReScrobbler.app */;
 			productType = "com.apple.product-type.application";
@@ -156,6 +161,9 @@
 				Base,
 			);
 			mainGroup = D66DA2B0268246B400D12BB7;
+			packageReferences = (
+				0405219526D576EE00BFF894 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+			);
 			productRefGroup = D66DA2BA268246B400D12BB7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -377,6 +385,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0405219526D576EE00BFF894 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
+			requirement = {
+				kind = revision;
+				revision = 72a509c93166540c0adf8323fd2652daade7f9f6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0405219626D576EE00BFF894 /* Introspect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0405219526D576EE00BFF894 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = Introspect;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D66DA2B1268246B400D12BB7 /* Project object */;
 }

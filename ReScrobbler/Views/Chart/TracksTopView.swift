@@ -7,82 +7,49 @@
 
 import SwiftUI
 
-class TracksTopData: ObservableObject {
-    @Published var savedJson : getTopTracks.jsonStruct?
+func getData() -> getTopTracks.jsonStruct?{
+    if let savedJson = defaults.object(forKey: "SavedTracksTop") as? Data {
+        if let loadedJson = try? JSONDecoder().decode(getTopTracks.jsonStruct.self, from: savedJson) {
+            print("[LOG]:> {TracksTopView} Loaded local JSON struct from <defaults>.")
+            return loadedJson
+        }
+    }
+    else{
+        if let jsonFromInternet = try? JSONDecoder().decode(getTopTracks.jsonStruct.self, from:getJSONFromUrl("method=chart.gettopTracks&limit=100")){
+            print("[LOG]:> {TracksTopView} Loaded JSON struct from <internet>")
+            if let encoded = try? JSONEncoder().encode(jsonFromInternet) {
+                defaults.set(encoded, forKey: "SavedTracksTop")
+            }
+            return jsonFromInternet
+        }
+        else{
+            print("[LOG]:> An error has occured while getting data from Internet.")
+        }
+    }
+    return nil
 }
 
 struct TracksTopView: View {
-    @EnvironmentObject var data: TracksTopData
     
     var body: some View {
         ScrollView(.vertical){
+            
             VStack{
-                VStack(){}.onAppear(perform: {
-                    
-                    //Checking if JSON is saved to RAM
-                    if ((data.savedJson != nil) ){
-                        print("JSON was used before")
-                    }
-                    else{
-                        print("JSON wasn't used before. Fetching data...")
-                        
-                        //Checking if JSON was saved to App Defaults
-                        if let savedTracksTopDefaults = defaults.object(forKey: "SavedTracksTop") as? Data {
-                            if let loadedTracksTopDefaults = try? JSONDecoder().decode(getTopTracks.jsonStruct.self, from: savedTracksTopDefaults) {
-                                print("Loading from Defaults")
-                                data.savedJson = loadedTracksTopDefaults
-                            }
-                        }
-                        else{
-                            print("Found nothing in Defaults. Fetching info from Internet.")
-                            
-                            //Getting JSON from Internet
-                            if let jsonFromInternet = try? JSONDecoder().decode(getTopTracks.jsonStruct.self, from:getJSONFromUrl("method=chart.gettoptracks&limit=100")){
-                                data.savedJson = jsonFromInternet
-                                
-                                print("Successfully got info from Internet")
-                                if let encoded = try? JSONEncoder().encode(data.savedJson) {
-                                    defaults.set(encoded, forKey: "SavedTracksTop")
-                                }
-                                
-                            }
-                            else{
-                                print("An error has occured while getting data from Internet.")
-                            }
-                        }
-                        
-                    }
-                })
-                if ((data.savedJson != nil)){
-                    let jsonSimplified = data.savedJson!.tracks!.track!
-                    ForEach(0 ..< (jsonSimplified.count)) { value in
-                        TracksTopEntry(
-                            index: value+1,
-                            track: jsonSimplified[value].name!,
-                            artist: jsonSimplified[value].artist!.name!,
-                            listenersCount: Int(jsonSimplified[value].listeners!)!.roundedWithAbbreviations,
-                            playCount: Int(jsonSimplified[value].playcount!)!.roundedWithAbbreviations
-                        )
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            print("Tap on: \(value+1)")
-                        }
-                        .onHover { inside in
-                            if inside {
-                                NSCursor.pointingHand.push()
-                            } else {
-                                NSCursor.pop()
-                            }
+                if let json = getData(){
+                    if let jsonSimplified = json.tracks?.track{
+                        ForEach(0 ..< (jsonSimplified.count)) { value in
+                            TracksTopEntry(
+                                index: value+1,
+                                track: jsonSimplified[value].name!,
+                                artist: jsonSimplified[value].artist!.name!,
+                                listenersCount: jsonSimplified[value].listeners?.roundedWithAbbreviations ?? "Unknown Listeners",
+                                playCount: jsonSimplified[value].playcount?.roundedWithAbbreviations ?? "Unknown Play Count"
+                            )
+                            .contentShape(Rectangle())
                         }
                     }
-                    Spacer()
-                    
                 }
-                else {
-                    Text("Can't load data")
-                    
-                }
-                
+                Spacer()
             }
         }
     }
@@ -90,19 +57,11 @@ struct TracksTopView: View {
 }
 
 struct TracksTopEntry: View {
-    var index: Int = 0
-    var track: String = "Unknown Track"
-    var artist: String = "Unknown Artist"
-    var listenersCount: String = "0"
-    var playCount: String = "0"
-    
-    init(index: Int, track: String, artist: String, listenersCount: String, playCount: String) {
-        self.index = index
-        self.track = track
-        self.artist = artist
-        self.listenersCount = listenersCount
-        self.playCount = playCount
-    }
+    var index: Int
+    var track: String
+    var artist: String
+    var listenersCount: String
+    var playCount: String
     
     var body: some View {
         VStack(){

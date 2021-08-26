@@ -20,14 +20,14 @@ extension UserDefaults {
     }
 }
 
-extension Int {
+extension String {
     var roundedWithAbbreviations: String {
         /**
          Round numbers and add "M" or "K" (millions and thousands)
          at the end of each number.
          */
         
-        let number = Double(self)
+        let number = Double(self) ?? 0
         let thousand = number / 1000
         let million = number / 1000000
         if million >= 1.0 {
@@ -42,18 +42,31 @@ extension Int {
     }
 }
 
-struct NavigationLazyView<Content: View>: View {
-    /**
-     Making NavigationLink lazy.
-     So it won't load all views when app starts.
-     */
-    
-    let build: () -> Content
-    init(_ build: @autoclosure @escaping () -> Content) {
-        self.build = build
+@propertyWrapper
+struct UserDefaultStorage<T: Codable> {
+    private let key: String
+    private let defaultValue: T
+
+    private let userDefaults: UserDefaults
+
+    init(key: String, default: T, store: UserDefaults = .standard) {
+        self.key = key
+        self.defaultValue = `default`
+        self.userDefaults = store
     }
-    var body: Content {
-        build()
+
+    var wrappedValue: T {
+        get {
+            guard let data = userDefaults.data(forKey: key) else {
+                return defaultValue
+            }
+            let value = try? JSONDecoder().decode(T.self, from: data)
+            return value ?? defaultValue
+        }
+        set {
+            let data = try? JSONEncoder().encode(newValue)
+            userDefaults.set(data, forKey: key)
+        }
     }
 }
 
@@ -91,6 +104,9 @@ func scream() -> String {
     return " [SCREAM -> \(randomDebugValue)] "
 }
 
+func toggleSidebar() {
+    NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+}
 
 @main
 struct ReScrobblerApp: App {
@@ -98,13 +114,7 @@ struct ReScrobblerApp: App {
         WindowGroup {
             ContentView()
             //Test()
-            .toolbar {
-                ToolbarItem(placement: .navigation) {
-                    Button(action: toggleSidebar, label: {
-                        Image(systemName: "sidebar.left")
-                    })
-                }
-            }
+            
             
             
         }.commands {
@@ -121,8 +131,6 @@ struct ReScrobblerApp: App {
         }
     }
     
-    func toggleSidebar() {
-        NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
-    }
+    
     
 }
