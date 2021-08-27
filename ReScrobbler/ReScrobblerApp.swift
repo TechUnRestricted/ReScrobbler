@@ -12,8 +12,15 @@ let baseUrl = "https://ws.audioscrobbler.com/2.0/?api_key=" + apiKey + "&format=
 
 let defaults = UserDefaults.standard
 
+
+
 extension UserDefaults {
     static func resetDefaults() {
+        /**
+         Function to reset all settings  (defaults)
+         in application.
+          
+         */
         if let bundleID = Bundle.main.bundleIdentifier {
             UserDefaults.standard.removePersistentDomain(forName: bundleID)
         }
@@ -42,33 +49,6 @@ extension String {
     }
 }
 
-@propertyWrapper
-struct UserDefaultStorage<T: Codable> {
-    private let key: String
-    private let defaultValue: T
-
-    private let userDefaults: UserDefaults
-
-    init(key: String, default: T, store: UserDefaults = .standard) {
-        self.key = key
-        self.defaultValue = `default`
-        self.userDefaults = store
-    }
-
-    var wrappedValue: T {
-        get {
-            guard let data = userDefaults.data(forKey: key) else {
-                return defaultValue
-            }
-            let value = try? JSONDecoder().decode(T.self, from: data)
-            return value ?? defaultValue
-        }
-        set {
-            let data = try? JSONEncoder().encode(newValue)
-            userDefaults.set(data, forKey: key)
-        }
-    }
-}
 
 
 enum ApiError: Error {
@@ -105,6 +85,9 @@ func scream() -> String {
 }
 
 func toggleSidebar() {
+    /**
+       "Collapse/Expand" feature for Sidebar
+     */
     NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
 }
 
@@ -113,10 +96,6 @@ struct ReScrobblerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-            //Test()
-            
-            
-            
         }.commands {
             CommandGroup(after: .systemServices) {
                 Button(action: {

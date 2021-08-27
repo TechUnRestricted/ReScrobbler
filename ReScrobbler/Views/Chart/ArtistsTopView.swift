@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+
 func getData() -> getTopArtists.jsonStruct?{
     if let savedJson = defaults.object(forKey: "SavedArtistsTop") as? Data {
         if let loadedJson = try? JSONDecoder().decode(getTopArtists.jsonStruct.self, from: savedJson) {
@@ -30,31 +32,65 @@ func getData() -> getTopArtists.jsonStruct?{
 }
 
 struct ArtistsTopView: View {
-    
+    @State var showAlert = false
+    @State var chosenArtistName : String = ""
     var body: some View {
-        ScrollView(.vertical){
-            VStack{
-
-                if let json = getData(){
-                    if let jsonSimplified = json.artists?.artist{
-                        ForEach(0 ..< (jsonSimplified.count)) { value in
-                            ArtistsTopEntry(
-                                index: value+1,
-                                artist: jsonSimplified[value].name ?? "Unknown Artist",
-                                listenersCount: jsonSimplified[value].listeners?.roundedWithAbbreviations ?? "Unknown Listeners",
-                                playCount: jsonSimplified[value].playcount?.roundedWithAbbreviations ?? "Unknown Play Count"
-                            )
-                            .contentShape(Rectangle())
+        ZStack{
+            if showAlert{
+                ArtistInfoPopUpView()
+                .zIndex(2)
+                .frame(
+                    minWidth: 0,
+                    maxWidth: .infinity,
+                    minHeight: 0,
+                    maxHeight: .infinity,
+                    alignment: .center
+                )
+                
+                .background(Color.gray.opacity(0.5))
+                    .onTapGesture {
+                        withAnimation{
+                        showAlert = false
                         }
                     }
+            }
+            
+            ScrollView(.vertical){
+                VStack{
                     
+                    if let json = getData(){
+                        if let jsonSimplified = json.artists?.artist{
+                            ForEach(0 ..< (jsonSimplified.count)) { value in
+                                ArtistsTopEntry(
+                                    index: value+1,
+                                    artist: jsonSimplified[value].name ?? "Unknown Artist",
+                                    listenersCount: jsonSimplified[value].listeners?.roundedWithAbbreviations ?? "Unknown Listeners",
+                                    playCount: jsonSimplified[value].playcount?.roundedWithAbbreviations ?? "Unknown Play Count"
+                                )
+                                .contentShape(Rectangle())
+                                .onTapGesture{
+                                    if let artistName = jsonSimplified[value].name{
+                                        chosenArtistName = artistName
+                                        withAnimation{
+                                            showAlert = true
+                                        }
+                                    }
+                                }
+                                
+                            }
+                        }
+                        
+                    }
+                    
+                    Spacer()
                 }
                 
-                Spacer()
             }
-        }
+        }.zIndex(1)
     }
 }
+
+
 
 struct ArtistsTopEntry: View {
     var index: Int

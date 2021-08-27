@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0405219726D576EE00BFF894 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 0405219626D576EE00BFF894 /* Introspect */; };
+		04A1E00A26D94F5600088711 /* CustomButtonViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A1E00926D94F5600088711 /* CustomButtonViews.swift */; };
+		04A1E00C26D9514A00088711 /* getInfoArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A1E00B26D9514A00088711 /* getInfoArtist.swift */; };
 		D64F79942689FA4300DE053E /* getTopTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F79932689FA4300DE053E /* getTopTracks.swift */; };
 		D64F7998268A07A300DE053E /* ArtistsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F7997268A07A300DE053E /* ArtistsTopView.swift */; };
 		D64F799A268A081700DE053E /* TracksTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F7999268A081700DE053E /* TracksTopView.swift */; };
@@ -21,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04A1E00926D94F5600088711 /* CustomButtonViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonViews.swift; sourceTree = "<group>"; };
+		04A1E00B26D9514A00088711 /* getInfoArtist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getInfoArtist.swift; sourceTree = "<group>"; };
 		D64F79932689FA4300DE053E /* getTopTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getTopTracks.swift; sourceTree = "<group>"; };
 		D64F7997268A07A300DE053E /* ArtistsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistsTopView.swift; sourceTree = "<group>"; };
 		D64F7999268A081700DE053E /* TracksTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTopView.swift; sourceTree = "<group>"; };
@@ -48,9 +52,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04A1E00626D94E9300088711 /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				04A1E00926D94F5600088711 /* CustomButtonViews.swift */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
 		D64F7995268A073200DE053E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				04A1E00626D94E9300088711 /* CustomViews */,
 				D64F7996268A073E00DE053E /* Chart */,
 				D66DA2BE268246B400D12BB7 /* ContentView.swift */,
 			);
@@ -111,6 +124,7 @@
 				D66DA2D126824DFD00D12BB7 /* getTopArtists.swift */,
 				D64F79932689FA4300DE053E /* getTopTracks.swift */,
 				D6D30BBA268A66AB00936133 /* getTopTags.swift */,
+				04A1E00B26D9514A00088711 /* getInfoArtist.swift */,
 			);
 			path = "Json Structures";
 			sourceTree = "<group>";
@@ -193,11 +207,13 @@
 				D64F79942689FA4300DE053E /* getTopTracks.swift in Sources */,
 				D6D30BBD268A677100936133 /* TagsTopView.swift in Sources */,
 				D66DA2BF268246B400D12BB7 /* ContentView.swift in Sources */,
+				04A1E00C26D9514A00088711 /* getInfoArtist.swift in Sources */,
 				D64F7998268A07A300DE053E /* ArtistsTopView.swift in Sources */,
 				D66DA2D226824DFD00D12BB7 /* getTopArtists.swift in Sources */,
 				D64F799A268A081700DE053E /* TracksTopView.swift in Sources */,
 				D6D30BBB268A66AB00936133 /* getTopTags.swift in Sources */,
 				D66DA2BD268246B400D12BB7 /* ReScrobblerApp.swift in Sources */,
+				04A1E00A26D94F5600088711 /* CustomButtonViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
