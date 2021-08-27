@@ -6,7 +6,7 @@
 //
 
 class getInfoArtist{
-    struct Welcome: Codable {
+    struct jsonStruct: Codable {
         let artist: WelcomeArtist?
     }
 
