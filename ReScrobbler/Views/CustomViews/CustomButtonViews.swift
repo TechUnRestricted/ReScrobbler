@@ -34,8 +34,8 @@ struct ColoredRoundedButton: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.subheadline)
-                .fontWeight(.light)
+                .font(.system(size: 15))
+                .fontWeight(.ultraLight)
                 .frame(minWidth: 50)
                 .padding(4.5)
                 .contentShape(Rectangle())

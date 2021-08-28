@@ -59,6 +59,11 @@ enum ApiError: Error {
     case connectionFailure
 }
 
+extension String {
+    var withoutHtmlTags: String {
+      return self.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
+    }
+}
 
 func getJSONFromUrl(_ method : String) throws -> Data{
     /**

@@ -10,6 +10,7 @@ import SwiftUI
 
 
 func getData() -> getTopArtists.jsonStruct?{
+
     if let savedJson = defaults.object(forKey: "SavedArtistsTop") as? Data {
         if let loadedJson = try? JSONDecoder().decode(getTopArtists.jsonStruct.self, from: savedJson) {
             print("[LOG]:> {ArtistsTopView} Loaded local JSON struct from <defaults>.")
@@ -40,7 +41,7 @@ extension String {
 func getArtistInfo(artistName: String) -> getInfoArtist.jsonStruct?{
     if let jsonFromInternet = try? JSONDecoder().decode(getInfoArtist.jsonStruct.self, from:getJSONFromUrl("method=artist.getinfo&artist=" + artistName.urlEncoded!)){
         print("[LOG]:> {ArtistInfoPopUpView} Loaded JSON struct from <internet>")
-
+        
         return jsonFromInternet
     }
     else{
@@ -55,7 +56,7 @@ struct ArtistInfoPopUpView: View {
     var tags : [String?] = []
     var listeners : String = "Unknown"
     var playCount : String = "Unknown"
-    var aboutArtist : String = "No information provided"
+    var aboutArtist : String?
     var similarArtists : [String?] = []
     
     var body: some View{
@@ -66,7 +67,7 @@ struct ArtistInfoPopUpView: View {
                     
                     ZStack{
                         Text(artistName)
-                            .font(.title)
+                            .font(.system(size: 30))
                             .fontWeight(.light)
                             .lineLimit(1)
                             .padding([.top, .leading, .trailing], 25.0)
@@ -95,34 +96,38 @@ struct ArtistInfoPopUpView: View {
                         Text("Play Count: " + (playCount.roundedWithAbbreviations))
                     }
                     .padding(.horizontal)
-                    .font(/*@START_MENU_TOKEN@*/.subheadline/*@END_MENU_TOKEN@*/)
+                    .font(.system(size: 15))
                     .opacity(0.8)
                 }
                 Group{
-                    VStack(alignment: .leading){
-                        Text("About artist:")
-                            .font(.body)
-                            .padding(.leading, 15.0)
-                            .padding(.bottom, 0.5)
-                        
-                        Text(aboutArtist)
-                            .font(.caption)
-                            .fontWeight(.light)
-                        
-                    }.padding(.top, 10)
-                    
-                    VStack(alignment: .leading){
-                        Text("Similar artists:")
-                            .font(.body)
-                            .padding(.leading, 15.0)
-                            .padding(.bottom, 0.5)
-                        VStack(spacing: 5.0){
-                            ForEach(0..<similarArtists.count){ index in
-                                SimilarArtistButton(artistName: similarArtists[index]!, index: index+1, action: {})
+                    if aboutArtist != nil{
+                        VStack(alignment: .leading){
+                            Text("About artist:")
+                                .font(.system(size: 20))
+                                .padding(.leading, 15.0)
+                                .padding(.bottom, 0.5)
+                            
+                            Text(aboutArtist!.withoutHtmlTags)
+                                .font(.system(size: 15))
+                                .fontWeight(.light)
+                                .fixedSize(horizontal: false, vertical: true)
+                            
+                        }.padding(.top, 10)
+                    }
+                    if similarArtists != []{
+                        VStack(alignment: .leading){
+                            Text("Similar artists:")
+                                .font(.system(size: 20))
+                                .padding(.leading, 15.0)
+                                .padding(.bottom, 0.5)
+                            VStack(spacing: 5.0){
+                                ForEach(0..<similarArtists.count){ index in
+                                    SimilarArtistButton(artistName: similarArtists[index]!, index: index+1, action: {})
+                                }
                             }
-                        }
-                        
-                    }.padding(.top, 10)
+                            
+                        }.padding(.top, 10)
+                    }
                 }.frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
                 
@@ -251,4 +256,24 @@ struct ArtistsTopEntry: View {
         }
     }
     
+}
+
+struct ArtistsTioView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        ArtistInfoPopUpView(artistName: "Marina and the Diamonds",
+                            isOnTour: true,
+                            tags: ["Pop", "Rock", "Female", "This is very long", "Test", "Bar", "Baz", "Boom"],
+                            listeners: "1234567",
+                            playCount: "98765432",
+                            aboutArtist: "Melanie Adele Martinez, known professionally as Melanie Martinez is an American singer, songwriter, artist, film director, music video director, actress, dancer and photographer. Moriah Rose Pereira known professionally as Poppy (or Moriah Poppy, That Poppy), is an American singer, songwriter, actress and model. In early 2014, Poppy signed to Island Records. Over a year later, her debut single ''Everybody Wants to Be Poppy'' was released and in early 2016, she released her debut extended play, Bubblebath.",
+                            similarArtists: ["Lana Del Rey", "Britney Spears", "Some Artist", "Eminem i guess", "More dummy entries"])
+            
+
+        VStack(){
+            SimilarArtistButton(artistName: "Marina and the Diamons", index: 1, action: {})
+        }.frame(width: 400, height: 200)
+        .padding()
+        .background(Color.white)
+    }
 }
