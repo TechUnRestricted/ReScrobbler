@@ -20,9 +20,9 @@ struct ContentView: View {
             List () {
                 Section(header: Text("Chart")) {
                     VStack(){
-                        ActionButton(title: "Artists", action: {tabSelection = "Artists"}, currentTab: $tabSelection)
-                        ActionButton(title: "Tracks", action: {tabSelection = "Tracks"}, currentTab: $tabSelection)
-                        ActionButton(title: "Tags", action: {tabSelection = "Tags"}, currentTab: $tabSelection)
+                        ActionButton(title: "Artists", image: "music.mic", action: {tabSelection = "Artists"}, currentTab: $tabSelection)
+                        ActionButton(title: "Tracks", image: "music.note", action: {tabSelection = "Tracks"}, currentTab: $tabSelection)
+                        ActionButton(title: "Tags", image: "tag", action: {tabSelection = "Tags"}, currentTab: $tabSelection)
                     }
                 }
             }.listStyle(SidebarListStyle())

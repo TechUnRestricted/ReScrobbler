@@ -10,17 +10,22 @@ import SwiftUI
 
 struct ActionButton: View {
     var title: String
-    //var image: Image?
+    var image: String
     var action: () -> Void
     @Binding var currentTab : String
     
     var body: some View {
         Button(action: action) {
-            Text(title)
-                .frame(minWidth: 10, maxWidth: .infinity, minHeight: 35, maxHeight: 35, alignment: .center)
-                .contentShape(Rectangle())
-                .background(currentTab == title ? Color.gray.opacity(0.2) : .clear)
-                .cornerRadius(6)
+            HStack{
+                Image(systemName: image)
+                    .padding(.leading)
+                    .frame(width: 25, alignment: .center)
+                Text(title)
+                    .padding(.leading, 5)
+            }.frame(minWidth: 10, maxWidth: .infinity, minHeight: 35, maxHeight: 35, alignment: .leading)
+            .contentShape(Rectangle())
+            .background(currentTab == title ? Color.gray.opacity(0.2) : .clear)
+            .cornerRadius(6)
             
         }.buttonStyle(PlainButtonStyle())
     }

@@ -37,12 +37,56 @@ struct TagsTopView: View {
             VStack{
                 if let json = getData(){
                     if let jsonSimplified = json.tags?.tag{
-                        ForEach(0 ..< (jsonSimplified.count)) { value in
-                            TagsTopEntry(
-                                index: value+1,
-                                tag: jsonSimplified[value].name ?? "Unknown Tag"
-                            )
-                            .contentShape(Rectangle())
+                        let vGridLayout = [
+                            GridItem(.flexible(maximum: 80), spacing: 0),
+                            GridItem(.flexible(), spacing: 0)
+                        ]
+                        
+                        
+                        LazyVGrid(columns: vGridLayout, spacing: 0) {
+                            ForEach(0 ..< (jsonSimplified.count)) { value in
+                                let currentColor : Color = {
+                                    if (value+1).isMultiple(of: 2){
+                                        return Color.gray.opacity(0.1)
+                                    } else {
+                                        return Color.gray.opacity(0.00001)
+                                    }
+                                }()
+                                
+                                Group{
+                                    Rectangle()
+                                        .foregroundColor(currentColor)
+                                        .frame(height: 80)
+                                        .overlay(
+                                                Text("\(value+1)")
+                                                    .font(.title2)
+                                        )
+                                    
+                                    Rectangle()
+                                        .foregroundColor(currentColor)
+                                        .frame(height: 80)
+                                        .overlay(
+                                            VStack{
+                                                Text(jsonSimplified[value].name!)
+                                                    .bold()
+                                                
+                                            }
+                                        )
+                                    
+                                }
+                                
+                                /*.onTapGesture{
+                                    if let artistName = jsonSimplified[value].name{
+                                      //  chosenArtistName = artistName
+                                        withAnimation{
+                                        //    showAlert = true
+                                        }
+                                    }
+                                    
+                                }*/
+                            }
+                            
+                            
                         }
                     }
                 }
@@ -52,6 +96,7 @@ struct TagsTopView: View {
         
     }
 }
+
 struct TagsTopEntry: View {
     var index: Int
     var tag: String

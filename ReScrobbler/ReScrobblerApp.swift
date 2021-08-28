@@ -63,6 +63,9 @@ extension String {
     var withoutHtmlTags: String {
       return self.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
     }
+    var urlEncoded: String? {
+        return addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+    }
 }
 
 func getJSONFromUrl(_ method : String) throws -> Data{

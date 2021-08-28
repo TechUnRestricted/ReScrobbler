@@ -32,11 +32,7 @@ func getData() -> getTopArtists.jsonStruct?{
     return nil
 }
 
-extension String {
-    var urlEncoded: String? {
-        return addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-    }
-}
+
 
 func getArtistInfo(artistName: String) -> getInfoArtist.jsonStruct?{
     if let jsonFromInternet = try? JSONDecoder().decode(getInfoArtist.jsonStruct.self, from:getJSONFromUrl("method=artist.getinfo&artist=" + artistName.urlEncoded!)){
