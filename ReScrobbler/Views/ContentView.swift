@@ -58,27 +58,10 @@ extension Color {
 
 
 
-struct TruePreview: View {
-    var body: some View {
-       EmptyView()
-    }
-}
+
 struct ContentView_Previews: PreviewProvider {
     
     static var previews: some View {
-        ArtistInfoPopUpView(artistName: "Marina and the Diamonds",
-                            isOnTour: true,
-                            tags: ["Pop", "Rock", "Female", "This is very long", "Test", "Bar", "Baz", "Boom"],
-                            listeners: "1234567",
-                            playCount: "98765432",
-                            aboutArtist: "Melanie Adele Martinez, known professionally as Melanie Martinez is an American singer, songwriter, artist, film director, music video director, actress, dancer and photographer. Moriah Rose Pereira known professionally as Poppy (or Moriah Poppy, That Poppy), is an American singer, songwriter, actress and model. In early 2014, Poppy signed to Island Records. Over a year later, her debut single ''Everybody Wants to Be Poppy'' was released and in early 2016, she released her debut extended play, Bubblebath.",
-                            similarArtists: ["Lana Del Rey", "Britney Spears", "Some Artist", "Eminem i guess", "More dummy entries"])
-            
-
-        VStack(){
-            SimilarArtistButton(artistName: "Marina and the Diamons", index: 1, action: {})
-        }.frame(width: 400, height: 200)
-        .padding()
-        .background(Color.white)
+        TruePreview()
     }
 }

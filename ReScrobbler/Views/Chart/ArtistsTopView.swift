@@ -10,7 +10,7 @@ import SwiftUI
 
 
 func getData() -> getTopArtists.jsonStruct?{
-
+    
     if let savedJson = defaults.object(forKey: "SavedArtistsTop") as? Data {
         if let loadedJson = try? JSONDecoder().decode(getTopArtists.jsonStruct.self, from: savedJson) {
             print("[LOG]:> {ArtistsTopView} Loaded local JSON struct from <defaults>.")
@@ -197,22 +197,69 @@ struct ArtistsTopView: View {
                     
                     if let json = getData(){
                         if let jsonSimplified = json.artists?.artist{
-                            ForEach(0 ..< (jsonSimplified.count)) { value in
-                                ArtistsTopEntry(
-                                    index: value+1,
-                                    artist: jsonSimplified[value].name ?? "Unknown Artist",
-                                    listenersCount: jsonSimplified[value].listeners?.roundedWithAbbreviations ?? "Unknown Listeners",
-                                    playCount: jsonSimplified[value].playcount?.roundedWithAbbreviations ?? "Unknown Play Count"
-                                )
-                                .contentShape(Rectangle())
-                                .onTapGesture{
-                                    if let artistName = jsonSimplified[value].name{
-                                        chosenArtistName = artistName
-                                        withAnimation{
-                                            showAlert = true
+                            
+                            let vGridLayout = [
+                                GridItem(.flexible(maximum: 80), spacing: 0),
+                                GridItem(.flexible(), spacing: 0),
+                                GridItem(.flexible(), spacing: 0),
+                                GridItem(.flexible(), spacing: 0)
+                            ]
+                            
+                            
+                            LazyVGrid(columns: vGridLayout, spacing: 0) {
+                                ForEach(0 ..< (jsonSimplified.count)) { value in
+                                    let currentColor : Color = {
+                                        if (value+1).isMultiple(of: 2){
+                                            return Color.gray.opacity(0.1)
+                                        } else {
+                                            return Color.gray.opacity(0.00001)
                                         }
+                                    }()
+                                    
+                                    Group{
+                                        Rectangle()
+                                            .foregroundColor(currentColor)
+                                            .frame(height: 50)
+                                            .overlay(
+                                                Text("\(value+1)")
+                                                    .font(.title2)
+                                            )
+                                        
+                                        Rectangle()
+                                            .foregroundColor(currentColor)
+                                            .frame(height: 50)
+                                            .overlay(
+                                                Text(jsonSimplified[value].name!)
+                                                    .bold()
+                                            )
+                                        
+                                        Rectangle()
+                                            .foregroundColor(currentColor)
+                                            .frame(height: 50)
+                                            .overlay(
+                                                Text("Listeners: \(jsonSimplified[value].listeners!.roundedWithAbbreviations)")
+                                            )
+                                        
+                                        Rectangle()
+                                            .foregroundColor(currentColor)
+                                            .frame(height: 50)
+                                            .overlay(
+                                                Text("Play Count: \(jsonSimplified[value].playcount!.roundedWithAbbreviations)")
+                                            )
+                                        
+                                    }
+                                    
+                                    .onTapGesture{
+                                        if let artistName = jsonSimplified[value].name{
+                                            chosenArtistName = artistName
+                                            withAnimation{
+                                                showAlert = true
+                                            }
+                                        }
+                                        
                                     }
                                 }
+                                
                                 
                             }
                         }
@@ -258,22 +305,76 @@ struct ArtistsTopEntry: View {
     
 }
 
+
+struct TruePreview: View {
+    var vGridLayout = [
+        GridItem(.flexible(maximum: 100)),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    var body: some View {
+        VStack{
+            ScrollView {
+                // 3
+                LazyVGrid(columns: vGridLayout) {
+                    // 4
+                    ForEach(0..<100) { value in
+                        // 5
+                        Rectangle()
+                            .foregroundColor(Color.green)
+                            .frame(height: 50)
+                            .overlay(
+                                // 6
+                                Text("\(value)").foregroundColor(.white)
+                            )
+                        
+                        Rectangle()
+                            .foregroundColor(Color.green)
+                            .frame(height: 50)
+                            .overlay(
+                                // 6
+                                Text("Melanie Martinez").foregroundColor(.white)
+                            )
+                        
+                        Rectangle()
+                            .foregroundColor(Color.green)
+                            .frame(height: 50)
+                            .overlay(
+                                // 6
+                                Text("Play Count: \(String(value*3).roundedWithAbbreviations)").foregroundColor(.white)
+                            )
+                        
+                        Rectangle()
+                            .foregroundColor(Color.green)
+                            .frame(height: 50)
+                            .overlay(
+                                // 6
+                                Text("Listeners: \(String(value*6).roundedWithAbbreviations)").foregroundColor(.white)
+                            )
+                    }
+                }.padding(.all, 10)
+            }
+        }.frame(width: 600, height: 500)
+        .background(Color.purple.opacity(0.5))
+        
+    }
+}
+
 struct ArtistsTioView_Previews: PreviewProvider {
     
     static var previews: some View {
-        ArtistInfoPopUpView(artistName: "Marina and the Diamonds",
-                            isOnTour: true,
-                            tags: ["Pop", "Rock", "Female", "This is very long", "Test", "Bar", "Baz", "Boom"],
-                            listeners: "1234567",
-                            playCount: "98765432",
-                            aboutArtist: "Melanie Adele Martinez, known professionally as Melanie Martinez is an American singer, songwriter, artist, film director, music video director, actress, dancer and photographer. Moriah Rose Pereira known professionally as Poppy (or Moriah Poppy, That Poppy), is an American singer, songwriter, actress and model. In early 2014, Poppy signed to Island Records. Over a year later, her debut single ''Everybody Wants to Be Poppy'' was released and in early 2016, she released her debut extended play, Bubblebath.",
-                            similarArtists: ["Lana Del Rey", "Britney Spears", "Some Artist", "Eminem i guess", "More dummy entries"])
-            
-
-        VStack(){
-            SimilarArtistButton(artistName: "Marina and the Diamons", index: 1, action: {})
-        }.frame(width: 400, height: 200)
-        .padding()
-        .background(Color.white)
+        TruePreview()
+        
+        /*ArtistInfoPopUpView(artistName: "Marina and the Diamonds",
+         isOnTour: true,
+         tags: ["Pop", "Rock", "Female", "This is very long", "Test", "Bar", "Baz", "Boom"],
+         listeners: "1234567",
+         playCount: "98765432",
+         aboutArtist: "Melanie Adele Martinez, known professionally as Melanie Martinez is an American singer, songwriter, artist, film director, music video director, actress, dancer and photographer. Moriah Rose Pereira known professionally as Poppy (or Moriah Poppy, That Poppy), is an American singer, songwriter, actress and model. In early 2014, Poppy signed to Island Records. Over a year later, her debut single ''Everybody Wants to Be Poppy'' was released and in early 2016, she released her debut extended play, Bubblebath.",
+         similarArtists: ["Lana Del Rey", "Britney Spears", "Some Artist", "Eminem i guess", "More dummy entries"])
+         
+         */
+        
     }
 }
