@@ -81,7 +81,7 @@ struct ArtistInfoPopUpView: View {
                 ScrollView(.horizontal, showsIndicators: false){
                     HStack{
                         ForEach(tags, id: \.self){ tag in
-                            ColoredRoundedButton(title: tag!, action: {}, color: Color.random)
+                            ColoredRoundedButton(title: tag ?? "Unknown Tag", action: {}, color: Color.random)
                         }
                     }
                 }.clipShape(Capsule())
@@ -103,7 +103,7 @@ struct ArtistInfoPopUpView: View {
                                 .padding(.leading, 15.0)
                                 .padding(.bottom, 0.5)
                             
-                            Text(aboutArtist!.withoutHtmlTags)
+                            Text(aboutArtist?.withoutHtmlTags ?? "No information provided")
                                 .font(.system(size: 15))
                                 .fontWeight(.light)
                                 .fixedSize(horizontal: false, vertical: true)
@@ -118,7 +118,7 @@ struct ArtistInfoPopUpView: View {
                                 .padding(.bottom, 0.5)
                             VStack(spacing: 5.0){
                                 ForEach(0..<similarArtists.count){ index in
-                                    SimilarArtistButton(artistName: similarArtists[index]!, index: index+1, action: {})
+                                    SimilarArtistButton(artistName: similarArtists[index] ?? "Unknown Artist", index: index+1, action: {})
                                 }
                             }
                             
@@ -134,12 +134,12 @@ struct ArtistInfoPopUpView: View {
         .padding(.horizontal, 22.0)
         .frame(maxWidth: 800, maxHeight: 600)
         .background(Color(NSColor.windowBackgroundColor))
-        .cornerRadius(25)
+        .cornerRadius(20)
         
     }
 }
 
-struct ArtistsTopView: View {
+struct ChartArtistsTopView: View {
     @State var showAlert = false
     @State var chosenArtistName : String = ""
     var body: some View {
@@ -225,7 +225,7 @@ struct ArtistsTopView: View {
                                             .foregroundColor(currentColor)
                                             .frame(height: 50)
                                             .overlay(
-                                                Text(jsonSimplified[value].name!)
+                                                Text(jsonSimplified[value].name ?? "Unknown Tag")
                                                     .bold()
                                             )
                                         
@@ -233,14 +233,14 @@ struct ArtistsTopView: View {
                                             .foregroundColor(currentColor)
                                             .frame(height: 50)
                                             .overlay(
-                                                Text("Listeners: \(jsonSimplified[value].listeners!.roundedWithAbbreviations)")
+                                                Text("Listeners: \(jsonSimplified[value].listeners?.roundedWithAbbreviations ?? "Unknown")")
                                             )
                                         
                                         Rectangle()
                                             .foregroundColor(currentColor)
                                             .frame(height: 50)
                                             .overlay(
-                                                Text("Play Count: \(jsonSimplified[value].playcount!.roundedWithAbbreviations)")
+                                                Text("Play Count: \(jsonSimplified[value].playcount?.roundedWithAbbreviations ?? "Unknown")")
                                             )
                                         
                                     }
@@ -303,57 +303,108 @@ struct ArtistsTopEntry: View {
 
 
 struct TruePreview: View {
-    var vGridLayout = [
-        GridItem(.flexible(maximum: 100)),
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
     var body: some View {
-        VStack{
-            ScrollView {
-                // 3
-                LazyVGrid(columns: vGridLayout) {
-                    // 4
-                    ForEach(0..<100) { value in
-                        // 5
-                        Rectangle()
-                            .foregroundColor(Color.green)
-                            .frame(height: 50)
-                            .overlay(
-                                // 6
-                                Text("\(value)").foregroundColor(.white)
-                            )
-                        
-                        Rectangle()
-                            .foregroundColor(Color.green)
-                            .frame(height: 50)
-                            .overlay(
-                                // 6
-                                Text("Melanie Martinez").foregroundColor(.white)
-                            )
-                        
-                        Rectangle()
-                            .foregroundColor(Color.green)
-                            .frame(height: 50)
-                            .overlay(
-                                // 6
-                                Text("Play Count: \(String(value*3).roundedWithAbbreviations)").foregroundColor(.white)
-                            )
-                        
-                        Rectangle()
-                            .foregroundColor(Color.green)
-                            .frame(height: 50)
-                            .overlay(
-                                // 6
-                                Text("Listeners: \(String(value*6).roundedWithAbbreviations)").foregroundColor(.white)
-                            )
-                    }
-                }.padding(.all, 10)
-            }
-        }.frame(width: 600, height: 500)
-        .background(Color.purple.opacity(0.5))
         
+        VStack{
+        HStack(){
+            Image("Allie-X")
+                .frame(width: 200, height: 200)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color.white.opacity(0.3), lineWidth: 5).blur(radius: 0.5)
+                )
+                .cornerRadius(20)
+                .padding()
+            
+            VStack(alignment: .leading){
+                Group(){
+                    Text("Allie X")
+                        .frame(minWidth: 200, alignment: .leading)
+                        .font(.title2)
+                        .padding()
+                    
+                    
+                    
+                    Text("Cape God")
+                        .fontWeight(.bold)
+                        .frame(minWidth: 300, alignment: .leading)
+                        .font(.largeTitle)
+                        .padding()
+   
+                }
+                .foregroundColor(Color.white)
+                .background(Color.white.opacity(0.5))
+                
+                .opacity(0.8)
+                
+                .cornerRadius(20)
+                
+            }
+        }
+        .frame(width: 700, alignment: .leading)
+        .background(
+            ZStack{
+                Image("Allie-X")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .blur(radius: 4.0, opaque: true)
+                Color.black.opacity(0.2)
+            }
+        )
+        
+        .cornerRadius(25)
+        /////////
+        HStack(){
+            Image("Tessa-Violet")
+                .frame(width: 200, height: 200)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color.black.opacity(0.3), lineWidth: 5).blur(radius: 0.5)
+                )
+                .cornerRadius(20)
+                .padding()
+            
+            VStack(alignment: .leading){
+                Group(){
+                    Text("Tessa Violet")
+                        .frame(minWidth: 200, alignment: .leading)
+                        .font(.title2)
+                        .padding()
+                        
+                    
+                    Text("Bad Ideas")
+                        .fontWeight(.bold)
+                        .frame(minWidth: 300, alignment: .leading)
+                        .font(.largeTitle)
+                        .padding()
+                        
+                }
+                .foregroundColor(Color.white)
+                .background(Color.black.opacity(0.5))
+                
+                .opacity(0.8)
+                
+                .cornerRadius(20)
+                
+            }
+        }
+        .frame(width: 700, alignment: .leading)
+        .background(
+            ZStack{
+                Image("Tessa-Violet")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .blur(radius: 4.0, opaque: true)
+                    //.padding(-20)
+                Color.black.opacity(0.2)
+            }
+        )
+        
+        .cornerRadius(25)
+        
+        
+        
+    }
     }
 }
 

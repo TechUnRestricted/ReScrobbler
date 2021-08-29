@@ -8,8 +8,9 @@
 import SwiftUI
 
 
-struct ActionButton: View {
+struct SidebarButton: View {
     var title: String
+    var tag: String
     var image: String
     var action: () -> Void
     @Binding var currentTab : String
@@ -24,7 +25,7 @@ struct ActionButton: View {
                     .padding(.leading, 5)
             }.frame(minWidth: 10, maxWidth: .infinity, minHeight: 35, maxHeight: 35, alignment: .leading)
             .contentShape(Rectangle())
-            .background(currentTab == title ? Color.gray.opacity(0.2) : .clear)
+            .background(currentTab == tag ? Color.gray.opacity(0.2) : .clear)
             .cornerRadius(6)
             
         }.buttonStyle(PlainButtonStyle())

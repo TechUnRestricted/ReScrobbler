@@ -27,6 +27,12 @@ extension UserDefaults {
     }
 }
 
+extension Color {
+    static var random: Color {
+        return .init(hue: .random(in: 0...1), saturation: 1, brightness: 1)
+    }
+}
+
 extension String {
     var roundedWithAbbreviations: String {
         /**

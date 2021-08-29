@@ -11,18 +11,23 @@ import Introspect
 
 struct ContentView: View {
     
-    @State private var tabSelection: String = "Artists"
+    @State private var tabSelection: String = "Chart.Tracks"
     
     
     var body: some View {
         
         NavigationView {
             List () {
-                Section(header: Text("Chart")) {
+                Section(header: Text("Chart").bold().font(.title)) {
                     VStack(){
-                        ActionButton(title: "Artists", image: "music.mic", action: {tabSelection = "Artists"}, currentTab: $tabSelection)
-                        ActionButton(title: "Tracks", image: "music.note", action: {tabSelection = "Tracks"}, currentTab: $tabSelection)
-                        ActionButton(title: "Tags", image: "tag", action: {tabSelection = "Tags"}, currentTab: $tabSelection)
+                        SidebarButton(title: "Artists", tag: "Chart.Artists", image: "music.mic", action: {tabSelection = "Chart.Artists"}, currentTab: $tabSelection)
+                        SidebarButton(title: "Tracks", tag: "Chart.Tracks", image: "music.note", action: {tabSelection = "Chart.Tracks"}, currentTab: $tabSelection)
+                        SidebarButton(title: "Tags", tag: "Chart.Tags", image: "tag", action: {tabSelection = "Chart.Tags"}, currentTab: $tabSelection)
+                    }
+                }
+                Section(header: Text("Yours").bold().font(.title)) {
+                    VStack(){
+                        SidebarButton(title: "Albums", tag: "Yours.Albums", image: "rectangle.stack", action: {tabSelection = "Yours.Albums"}, currentTab: $tabSelection)
                     }
                 }
             }.listStyle(SidebarListStyle())
@@ -37,9 +42,12 @@ struct ContentView: View {
             }
             
             TabView(selection: $tabSelection){
-                ArtistsTopView().tag("Artists")
-                TracksTopView().tag("Tracks")
-                TagsTopView().tag("Tags")
+                ///Section: Chart
+                ChartArtistsTopView().tag("Chart.Artists")
+                ChartTracksTopView().tag("Chart.Tracks")
+                ChartTagsTopView().tag("Chart.Tags")
+                ///Section: Yours
+                YoursAlbumsView().tag("Yours.Albums")
             }.introspectTabView{ property in
                 property.tabPosition = .none
                 property.tabViewBorderType = .none
@@ -48,12 +56,16 @@ struct ContentView: View {
         
     }
 }
+struct YoursAlbumsView: View {
 
-extension Color {
-    static var random: Color {
-        return .init(hue: .random(in: 0...1), saturation: 1, brightness: 1)
+    var body: some View {
+        VStack{
+            Text("Yours: Albums")
+        }
     }
+    
 }
+
 
 
 

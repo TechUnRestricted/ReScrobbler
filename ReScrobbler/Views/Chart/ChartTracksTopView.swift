@@ -1,5 +1,5 @@
 //
-//  TagsTopView.swift
+//  TracksTopView.swift
 //  ReScrobbler
 //
 //  Created on 28.06.2021.
@@ -7,18 +7,18 @@
 
 import SwiftUI
 
-func getData() -> getTopTags.jsonStruct?{
-    if let savedJson = defaults.object(forKey: "SavedTagsTop") as? Data {
-        if let loadedJson = try? JSONDecoder().decode(getTopTags.jsonStruct.self, from: savedJson) {
-            print("[LOG]:> {TagsTopView} Loaded local JSON struct from <defaults>.")
+func getData() -> getTopTracks.jsonStruct?{
+    if let savedJson = defaults.object(forKey: "SavedTracksTop") as? Data {
+        if let loadedJson = try? JSONDecoder().decode(getTopTracks.jsonStruct.self, from: savedJson) {
+            print("[LOG]:> {TracksTopView} Loaded local JSON struct from <defaults>.")
             return loadedJson
         }
     }
     else{
-        if let jsonFromInternet = try? JSONDecoder().decode(getTopTags.jsonStruct.self, from:getJSONFromUrl("method=chart.gettopTags&limit=100")){
-            print("[LOG]:> {TagsTopView} Loaded JSON struct from <internet>")
+        if let jsonFromInternet = try? JSONDecoder().decode(getTopTracks.jsonStruct.self, from:getJSONFromUrl("method=chart.gettopTracks&limit=100")){
+            print("[LOG]:> {TracksTopView} Loaded JSON struct from <internet>")
             if let encoded = try? JSONEncoder().encode(jsonFromInternet) {
-                defaults.set(encoded, forKey: "SavedTagsTop")
+                defaults.set(encoded, forKey: "SavedTracksTop")
             }
             return jsonFromInternet
         }
@@ -29,16 +29,19 @@ func getData() -> getTopTags.jsonStruct?{
     return nil
 }
 
-struct TagsTopView: View {
+struct ChartTracksTopView: View {
     
     var body: some View {
         ScrollView(.vertical){
-
+            
             VStack{
                 if let json = getData(){
-                    if let jsonSimplified = json.tags?.tag{
+                    if let jsonSimplified = json.tracks?.track{
+                        
                         let vGridLayout = [
                             GridItem(.flexible(maximum: 80), spacing: 0),
+                            GridItem(.flexible(), spacing: 0),
+                            GridItem(.flexible(), spacing: 0),
                             GridItem(.flexible(), spacing: 0)
                         ]
                         
@@ -67,10 +70,25 @@ struct TagsTopView: View {
                                         .frame(height: 80)
                                         .overlay(
                                             VStack{
-                                                Text(jsonSimplified[value].name!)
+                                                Text(jsonSimplified[value].name ?? "Unknown Tracks")
                                                     .bold()
-                                                
+                                                Text((jsonSimplified[value].artist?.name) ?? "Unknown Artist")
+                                                    .fontWeight(.light)
                                             }
+                                        )
+                                    
+                                    Rectangle()
+                                        .foregroundColor(currentColor)
+                                        .frame(height: 80)
+                                        .overlay(
+                                            Text("Listeners: \(jsonSimplified[value].listeners?.roundedWithAbbreviations ?? "Unknown")")
+                                        )
+                                    
+                                    Rectangle()
+                                        .foregroundColor(currentColor)
+                                        .frame(height: 80)
+                                        .overlay(
+                                            Text("Play Count: \(jsonSimplified[value].playcount?.roundedWithAbbreviations ?? "Unknown")")
                                         )
                                     
                                 }
@@ -88,19 +106,22 @@ struct TagsTopView: View {
                             
                             
                         }
+
                     }
                 }
                 Spacer()
             }
         }
-        
     }
+    
 }
 
-struct TagsTopEntry: View {
+struct TracksTopEntry: View {
     var index: Int
-    var tag: String
-    
+    var track: String
+    var artist: String
+    var listenersCount: String
+    var playCount: String
     
     var body: some View {
         VStack(){
@@ -108,16 +129,27 @@ struct TagsTopEntry: View {
             HStack{
                 Text(String(index))
                     .font(.title2)
+                    .padding()
                     .frame(width: 80)
-                Text(tag)
-                    .bold()
-                    .frame(width: 600, alignment: .leading)
-            }.padding()
-        }.lineLimit(1)
-        Divider()
+                Group{
+                    VStack{
+                        Group{
+                            Text(track)
+                                .bold()
+                            Text(artist)
+                                .fontWeight(.light)
+                        }
+                        .frame(width: 200, alignment: .leading)
+                    }
+                    
+                    Text("Listeners: " + listenersCount)
+                        .frame(width: 200, alignment: .leading)
+                    Text("Play Count: " + playCount)
+                        .frame(width: 200, alignment: .leading)
+                }.padding()
+            }.lineLimit(1)
+            Divider()
+        }
     }
 }
-
-
-
 
