@@ -9,25 +9,70 @@ import SwiftUI
 import Introspect
 
 
+
+
+var defaultTabSelection : String = "Chart.Artists"
+
 struct ContentView: View {
-    
-    @State private var tabSelection: String = "Chart.Tracks"
-    
-    
+    /*
+     Using TabView for switching between screens (views)
+     Because there is no better solution for it. Period.
+     */
+    @State var tabSelectionHistory : [String] = []
+    @State var tabOffset : Int = 0
+    @State private var tabSelection: String = defaultTabSelection
+    func changeScreen(tag: String) {
+        switch tag {
+        case "Go.Left":
+            tabOffset+=1
+            print("""
+                
+                =<Left: Start>==================
+                History: [\(tabSelectionHistory)]
+                Tab Offset: [\(tabOffset)]
+                =<Left: End>====================
+                
+                """)
+            tabSelection = tabSelectionHistory.dropLast(tabOffset).last ?? defaultTabSelection
+        case "Go.Right":
+            print("""
+                
+                =<Right: Start>=================
+                History: [\(tabSelectionHistory)]
+                Tab Offset: [\(tabOffset-1)]
+                =<Right: End>===================
+                
+                """)
+            tabSelection = tabSelectionHistory.dropFirst(tabSelectionHistory.count - tabOffset).first!
+            tabOffset-=1
+            break
+
+        default:
+           if tag != tabSelection {
+                print("[LOG]:> Changing screen from <\(tabSelection)> to <\(tag)>.")
+            tabSelectionHistory = tabSelectionHistory.dropLast(tabOffset)
+            tabOffset = 0
+                tabSelectionHistory.append(tag)
+                tabSelection = tag
+            } else {
+                print("[Failure]:> <\(tag)>")
+            }
+        }
+    }
     var body: some View {
         
         NavigationView {
-            List () {
+            List (/* Using custom "selection" handler */) {
                 Section(header: Text("Chart").bold().font(.title)) {
                     VStack(){
-                        SidebarButton(title: "Artists", tag: "Chart.Artists", image: "music.mic", action: {tabSelection = "Chart.Artists"}, currentTab: $tabSelection)
-                        SidebarButton(title: "Tracks", tag: "Chart.Tracks", image: "music.note", action: {tabSelection = "Chart.Tracks"}, currentTab: $tabSelection)
-                        SidebarButton(title: "Tags", tag: "Chart.Tags", image: "tag", action: {tabSelection = "Chart.Tags"}, currentTab: $tabSelection)
+                        SidebarButton(title: "Artists", tag: "Chart.Artists", image: "music.mic", action: {changeScreen(tag: "Chart.Artists")}, currentTab: $tabSelection)
+                        SidebarButton(title: "Tracks", tag: "Chart.Tracks", image: "music.note", action: {changeScreen(tag: "Chart.Tracks")}, currentTab: $tabSelection)
+                        SidebarButton(title: "Tags", tag: "Chart.Tags", image: "tag", action: {changeScreen(tag: "Chart.Tags")}, currentTab: $tabSelection)
                     }
                 }
                 Section(header: Text("Yours").bold().font(.title)) {
                     VStack(){
-                        SidebarButton(title: "Albums", tag: "Yours.Albums", image: "rectangle.stack", action: {tabSelection = "Yours.Albums"}, currentTab: $tabSelection)
+                        SidebarButton(title: "Albums", tag: "Yours.Albums", image: "rectangle.stack", action: {changeScreen(tag: "Yours.Albums")}, currentTab: $tabSelection)
                     }
                 }
             }.listStyle(SidebarListStyle())
@@ -39,16 +84,34 @@ struct ContentView: View {
                         Image(systemName: "sidebar.left")
                     })
                 }
+                ToolbarItem(placement: .navigation) {
+                    Button(action: {
+                        changeScreen(tag: "Go.Left")
+                    }, label: {
+                        Image(systemName: "chevron.backward")
+                    }).disabled(tabOffset >= tabSelectionHistory.count ? true : false)
+                }
+                ToolbarItem(placement: .navigation) {
+                    Button(action: {
+                        changeScreen(tag: "Go.Right")
+                    }, label: {
+                        Image(systemName: "chevron.forward")
+                    }).disabled(tabOffset == 0 ? true : false)
+                    
+                }
+                
             }
             
             TabView(selection: $tabSelection){
-                ///Section: Chart
+                /* Section: Chart */
                 ChartArtistsTopView().tag("Chart.Artists")
                 ChartTracksTopView().tag("Chart.Tracks")
                 ChartTagsTopView().tag("Chart.Tags")
-                ///Section: Yours
+                /* Section: Yours */
                 YoursAlbumsView().tag("Yours.Albums")
             }.introspectTabView{ property in
+                /* Using Introspect module (master)
+                 to disable TabView stock styling */
                 property.tabPosition = .none
                 property.tabViewBorderType = .none
             }
@@ -56,8 +119,9 @@ struct ContentView: View {
         
     }
 }
-struct YoursAlbumsView: View {
 
+struct YoursAlbumsView: View {
+    
     var body: some View {
         VStack{
             Text("Yours: Albums")
@@ -71,9 +135,8 @@ struct YoursAlbumsView: View {
 
 
 
-struct ContentView_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        TruePreview()
-    }
-}
+/*struct ContentView_Previews: PreviewProvider {
+ static var previews: some View {
+ TruePreview()
+ }
+ }*/

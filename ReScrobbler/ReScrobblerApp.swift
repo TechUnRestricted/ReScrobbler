@@ -19,7 +19,7 @@ extension UserDefaults {
         /**
          Function to reset all settings  (defaults)
          in application.
-          
+         
          */
         if let bundleID = Bundle.main.bundleIdentifier {
             UserDefaults.standard.removePersistentDomain(forName: bundleID)
@@ -29,11 +29,34 @@ extension UserDefaults {
 
 extension Color {
     static var random: Color {
+        /**
+         Function for random color generation.
+         */
         return .init(hue: .random(in: 0...1), saturation: 1, brightness: 1)
     }
 }
 
+enum ApiError: Error {
+    /**
+     Dummy throwable error.
+     */
+    
+    case connectionFailure
+}
+
 extension String {
+    var withoutHtmlTags: String {
+        /**
+         Remove all HTML tags from String
+         */
+        return self.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
+    }
+    var urlEncoded: String? {
+        /**
+         Make String escaped for URL (example: Hello World -> Hello%20World)
+         */
+        return addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+    }
     var roundedWithAbbreviations: String {
         /**
          Round numbers and add "M" or "K" (millions and thousands)
@@ -52,25 +75,6 @@ extension String {
         else {
             return "\(self)"
         }
-    }
-}
-
-
-
-enum ApiError: Error {
-    /**
-     Dummy throwable error.
-     */
-    
-    case connectionFailure
-}
-
-extension String {
-    var withoutHtmlTags: String {
-      return self.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
-    }
-    var urlEncoded: String? {
-        return addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
     }
 }
 
@@ -100,7 +104,7 @@ func scream() -> String {
 
 func toggleSidebar() {
     /**
-       "Collapse/Expand" feature for Sidebar
+     "Collapse/Expand" feature for Sidebar
      */
     NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
 }

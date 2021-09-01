@@ -9,6 +9,9 @@ import SwiftUI
 
 
 struct SidebarButton: View {
+    /**
+      Styled Button used for navigating in Sidebar
+     */
     var title: String
     var tag: String
     var image: String
@@ -25,7 +28,10 @@ struct SidebarButton: View {
                     .padding(.leading, 5)
             }.frame(minWidth: 10, maxWidth: .infinity, minHeight: 35, maxHeight: 35, alignment: .leading)
             .contentShape(Rectangle())
-            .background(currentTab == tag ? Color.gray.opacity(0.2) : .clear)
+            .background(
+                /* Change button color on click */
+                currentTab == tag ? Color.gray.opacity(0.2) : .clear
+            )
             .cornerRadius(6)
             
         }.buttonStyle(PlainButtonStyle())
@@ -33,6 +39,9 @@ struct SidebarButton: View {
 }
 
 struct ColoredRoundedButton: View {
+    /**
+      Styled Button used for "On Tour" and tags
+     */
     var title: String
     var action: () -> Void
     var color: Color
@@ -53,6 +62,8 @@ struct ColoredRoundedButton: View {
 }
 
 struct SimilarArtistButton: View {
+    /**
+     Styled buttons for Similar Artists in info pop up */
     var artistName: String
     var index: Int
     var action: () -> Void

@@ -8,6 +8,9 @@
 import SwiftUI
 
 func getData() -> getTopTags.jsonStruct?{
+    /**
+        Getting data from URL (online) or from defaults (offline)
+     */
     if let savedJson = defaults.object(forKey: "SavedTagsTop") as? Data {
         if let loadedJson = try? JSONDecoder().decode(getTopTags.jsonStruct.self, from: savedJson) {
             print("[LOG]:> {TagsTopView} Loaded local JSON struct from <defaults>.")
