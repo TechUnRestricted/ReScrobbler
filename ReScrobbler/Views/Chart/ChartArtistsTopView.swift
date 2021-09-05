@@ -9,7 +9,7 @@ import SwiftUI
 
 
 
-func getData() -> getTopArtists.jsonStruct?{
+fileprivate func getData() -> getTopArtists.jsonStruct?{
     /**
         Getting data from URL (online) or from defaults (offline)
      */
@@ -36,7 +36,10 @@ func getData() -> getTopArtists.jsonStruct?{
 
 
 
-func getArtistInfo(artistName: String) -> getInfoArtist.jsonStruct?{
+fileprivate func getArtistInfo(artistName: String) -> getInfoArtist.jsonStruct?{
+    /**
+        Getting info about single artist from Internet
+     */
     if let jsonFromInternet = try? JSONDecoder().decode(getInfoArtist.jsonStruct.self, from:getJSONFromUrl("method=artist.getinfo&artist=" + artistName.urlEncoded!)){
         print("[LOG]:> {ArtistInfoPopUpView} Loaded JSON struct from <internet>")
         
@@ -48,30 +51,48 @@ func getArtistInfo(artistName: String) -> getInfoArtist.jsonStruct?{
     return nil
 }
 
-struct ArtistInfoPopUpView: View {
-    var artistName : String = "Unknown Artist"
-    var isOnTour : Bool = false
-    var tags : [String?] = []
-    var listeners : String = "Unknown"
-    var playCount : String = "Unknown"
-    var aboutArtist : String?
-    var similarArtists : [String?] = []
-    
+fileprivate struct ArtistInfoPopUpHandler: View{
+    var chosenArtistName : String
+    @Binding var showingModal : Bool
+
     var body: some View{
+        let artistInfo = getArtistInfo(artistName: chosenArtistName)?.artist
+        let tagsFormatted : [String?] = {
+            var arr : [String] = []
+            for tag in artistInfo?.tags?.tag ?? []{
+                arr.append(tag.name ?? "")
+            }
+            return arr
+        }()
+        
+        let similarArtistsFormatted : [String?] = {
+            var arr : [String] = []
+            for artist in artistInfo?.similar?.artist ?? []{
+                arr.append(artist.name ?? "")
+            }
+            return arr
+        }()
+        
+        
+        /*Start*/
         
         ScrollView(.vertical, showsIndicators: false){
             VStack(){
                 HStack{
                     
                     ZStack{
-                        Text(artistName)
+                        Text(artistInfo?.name ?? "")
                             .font(.system(size: 30))
                             .fontWeight(.light)
                             .lineLimit(1)
                             .padding([.top, .leading, .trailing], 25.0)
-                        if isOnTour{
                             HStack{
+                                VStack{
+                                    ColoredRoundedButton(title: "Close", action:{ showingModal = false}, color: Color.purple)
+                                }
                                 Spacer()
+                                
+                            if (artistInfo?.ontour == "1" ? true : false){
                                 VStack{
                                     ColoredRoundedButton(title: "On Tour", action: {}, color: Color.purple)
                                 }
@@ -82,7 +103,7 @@ struct ArtistInfoPopUpView: View {
                 
                 ScrollView(.horizontal, showsIndicators: false){
                     HStack{
-                        ForEach(tags, id: \.self){ tag in
+                        ForEach(tagsFormatted, id: \.self){ tag in
                             ColoredRoundedButton(title: tag ?? "Unknown Tag", action: {}, color: Color.random)
                         }
                     }
@@ -90,37 +111,37 @@ struct ArtistInfoPopUpView: View {
                 
                 HStack{
                     Group{
-                        Text("Listeners: " + (listeners.roundedWithAbbreviations))
-                        Text("Play Count: " + (playCount.roundedWithAbbreviations))
+                        Text("Listeners: " + (artistInfo?.stats?.listeners?.roundedWithAbbreviations ?? ""))
+                        Text("Play Count: " + (artistInfo?.stats?.playcount?.roundedWithAbbreviations ?? ""))
                     }
                     .padding(.horizontal)
                     .font(.system(size: 15))
                     .opacity(0.8)
                 }
                 Group{
-                    if aboutArtist != nil{
+                    if ((artistInfo?.bio?.summary) != nil){
                         VStack(alignment: .leading){
                             Text("About artist:")
                                 .font(.system(size: 20))
                                 .padding(.leading, 15.0)
                                 .padding(.bottom, 0.5)
                             
-                            Text(aboutArtist?.withoutHtmlTags ?? "No information provided")
+                            Text(artistInfo?.bio?.summary?.withoutHtmlTags ?? "No information provided")
                                 .font(.system(size: 15))
                                 .fontWeight(.light)
                                 .fixedSize(horizontal: false, vertical: true)
                             
                         }.padding(.top, 10)
                     }
-                    if similarArtists != []{
+                    if similarArtistsFormatted != []{
                         VStack(alignment: .leading){
                             Text("Similar artists:")
                                 .font(.system(size: 20))
                                 .padding(.leading, 15.0)
                                 .padding(.bottom, 0.5)
                             VStack(spacing: 5.0){
-                                ForEach(0..<similarArtists.count){ index in
-                                    SimilarArtistButton(artistName: similarArtists[index] ?? "Unknown Artist", index: index+1, action: {})
+                                ForEach(0..<similarArtistsFormatted.count){ index in
+                                    SimilarArtistButton(artistName: similarArtistsFormatted[index] ?? "Unknown Artist", index: index+1, action: {})
                                 }
                             }
                             
@@ -134,62 +155,39 @@ struct ArtistInfoPopUpView: View {
             
         }
         .padding(.horizontal, 22.0)
-        .frame(maxWidth: 800, maxHeight: 600)
+        .frame(minWidth: 200, maxWidth: 800, maxHeight: 600)
         .background(Color(NSColor.windowBackgroundColor))
-        .cornerRadius(20)
+        .cornerRadius(13)
         
+        /*End*/
+            .frame(
+                minWidth: 300,
+                maxWidth: .infinity,
+                minHeight: 300,
+                maxHeight: .infinity,
+                alignment: .center
+            )
+            
+            .background(Color.gray.opacity(0.5))
+            /*.onTapGesture {
+                withAnimation{
+                    showAlert = false
+                }
+            }*/
+            .onExitCommand{
+                showingModal = false
+            }
+    
     }
 }
 
+
+
+fileprivate var chosenArtistName : String = ""
+
 struct ChartArtistsTopView: View {
-    @State var showAlert = false
-    @State var chosenArtistName : String = ""
+    @State var showingModal = false
     var body: some View {
-        ZStack{
-            if showAlert{
-                let artistInfo = getArtistInfo(artistName: chosenArtistName)?.artist
-                let tagsFormatted : [String?] = {
-                    var arr : [String] = []
-                    for tag in artistInfo?.tags?.tag ?? []{
-                        arr.append(tag.name ?? "")
-                    }
-                    return arr
-                }()
-                
-                let similarArtistsFormatted : [String?] = {
-                    var arr : [String] = []
-                    for artist in artistInfo?.similar?.artist ?? []{
-                        arr.append(artist.name ?? "")
-                    }
-                    return arr
-                }()
-                
-                ArtistInfoPopUpView(
-                    artistName: artistInfo?.name ?? "",
-                    isOnTour: (artistInfo?.ontour == "1" ? true : false),
-                    tags: tagsFormatted,
-                    listeners: artistInfo?.stats?.listeners ?? "",
-                    playCount: artistInfo?.stats?.playcount ?? "",
-                    aboutArtist: artistInfo?.bio?.summary ?? "",
-                    similarArtists: similarArtistsFormatted)
-                    
-                    .zIndex(2)
-                    .frame(
-                        minWidth: 0,
-                        maxWidth: .infinity,
-                        minHeight: 0,
-                        maxHeight: .infinity,
-                        alignment: .center
-                    )
-                    
-                    .background(Color.gray.opacity(0.5))
-                    .onTapGesture {
-                        withAnimation{
-                            showAlert = false
-                        }
-                    }
-            }
-            
             ScrollView(.vertical){
                 VStack{
                     
@@ -249,12 +247,11 @@ struct ChartArtistsTopView: View {
                                     
                                     .onTapGesture{
                                         if let artistName = jsonSimplified[value].name{
+                                            print("Pressing -> \(artistName)")
                                             chosenArtistName = artistName
-                                            withAnimation{
-                                                showAlert = true
-                                            }
+                                            showingModal = true
                                         }
-                                        
+                                      
                                     }
                                 }
                                 
@@ -268,8 +265,13 @@ struct ChartArtistsTopView: View {
                 }
                 
             }
-        }.zIndex(1)
-    }
+            .sheet(
+                isPresented: $showingModal,
+                content: {ArtistInfoPopUpHandler(chosenArtistName: chosenArtistName, showingModal: $showingModal) }
+            )
+        }
+      
+    
 }
 
 

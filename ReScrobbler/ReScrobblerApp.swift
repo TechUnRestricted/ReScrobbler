@@ -115,6 +115,7 @@ struct ReScrobblerApp: App {
         WindowGroup {
             ContentView()
         }.commands {
+            
             CommandGroup(after: .systemServices) {
                 Button(action: {
                     UserDefaults.resetDefaults()

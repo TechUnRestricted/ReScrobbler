@@ -19,6 +19,7 @@ struct SidebarButton: View {
     @Binding var currentTab : String
     
     var body: some View {
+
         Button(action: action) {
             HStack{
                 Image(systemName: image)

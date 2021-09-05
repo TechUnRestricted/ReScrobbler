@@ -25,27 +25,10 @@ struct ContentView: View {
         switch tag {
         case "Go.Left":
             tabOffset+=1
-            print("""
-                
-                =<Left: Start>==================
-                History: [\(tabSelectionHistory)]
-                Tab Offset: [\(tabOffset)]
-                =<Left: End>====================
-                
-                """)
             tabSelection = tabSelectionHistory.dropLast(tabOffset).last ?? defaultTabSelection
         case "Go.Right":
-            print("""
-                
-                =<Right: Start>=================
-                History: [\(tabSelectionHistory)]
-                Tab Offset: [\(tabOffset-1)]
-                =<Right: End>===================
-                
-                """)
             tabSelection = tabSelectionHistory.dropFirst(tabSelectionHistory.count - tabOffset).first!
             tabOffset-=1
-            break
 
         default:
            if tag != tabSelection {
@@ -124,7 +107,8 @@ struct YoursAlbumsView: View {
     
     var body: some View {
         VStack{
-            Text("Yours: Albums")
+            AlbumCard(imageUrl: "https://lastfm.freetls.fastly.net/i/u/300x300/e8048f782acf8eb9e611dc82346faa6c.png", artist: "Tessa Violet", album: "Bad Ideas")
+
         }
     }
     
