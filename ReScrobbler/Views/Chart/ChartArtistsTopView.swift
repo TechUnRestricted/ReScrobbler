@@ -9,29 +9,63 @@ import SwiftUI
 
 
 
+
+
 fileprivate func getData() -> getTopArtists.jsonStruct?{
     /**
-        Getting data from URL (online) or from defaults (offline)
+        Getting data from URL (online) or from Container data (offline)
      */
-    if let savedJson = defaults.object(forKey: "SavedArtistsTop") as? Data {
-        if let loadedJson = try? JSONDecoder().decode(getTopArtists.jsonStruct.self, from: savedJson) {
-            print("[LOG]:> {ArtistsTopView} Loaded local JSON struct from <defaults>.")
-            return loadedJson
-        }
-    }
-    else{
+    let jsonFolder = fileManager?.appendingPathComponent("jsonStructures")
+    let jsonFile = jsonFolder?.appendingPathComponent("ChartArtistsTop.json")
+    
+     func loadFromInternet() -> getTopArtists.jsonStruct?{
         if let jsonFromInternet = try? JSONDecoder().decode(getTopArtists.jsonStruct.self, from:getJSONFromUrl("method=chart.gettopartists&limit=100")){
             print("[LOG]:> {ArtistsTopView} Loaded JSON struct from <internet>")
             if let encoded = try? JSONEncoder().encode(jsonFromInternet) {
-                defaults.set(encoded, forKey: "SavedArtistsTop")
+                if let jsonFile = jsonFile{
+                    do {
+                        try encoded.write(to: jsonFile)
+                        print("[LOG]:> JSON <ChartArtistsTop.json> has been saved.")
+
+                    } catch {
+                        print("[ERROR]:> Can't write <ChartArtistsTop.json>. {Message: \(error)}")
+                    }
+                }
             }
             return jsonFromInternet
         }
         else{
             print("[LOG]:> An error has occured while getting data from Internet.")
+            return nil
         }
     }
-    return nil
+    
+    do {
+        if let jsonFolder = jsonFolder{
+            try FileManager.default.createDirectory(atPath: jsonFolder.path, withIntermediateDirectories: true, attributes: nil)
+            print("[LOG]:> Folder <jsonStructures> has been created.")
+        }
+    } catch {
+        print("[ERROR]:> Can't create folder <jsonStructures>. {Message: \(error)}")
+    }
+    
+    print(jsonFolder?.path ?? "[[Can't get path]]")
+
+    if let jsonFile = jsonFile, FileManager.default.fileExists(atPath: jsonFile.path) {
+
+        do{
+            let json = try JSONDecoder().decode(getTopArtists.jsonStruct.self, from: Data(contentsOf: jsonFile))
+            print("[LOG]:> Loaded local JSON struct from <ChartArtistsTop.json>.")
+            return json
+        }
+        catch{
+            print("[ERROR]:> Can't load <ChartArtistsTop.json> from App Container. {Message: \(error)}")
+            return loadFromInternet()
+        }
+    }
+    else{
+       return loadFromInternet()
+    }
 }
 
 
@@ -161,9 +195,9 @@ fileprivate struct ArtistInfoPopUpHandler: View{
         
         /*End*/
             .frame(
-                minWidth: 300,
+                minWidth: 360,
                 maxWidth: .infinity,
-                minHeight: 300,
+                minHeight: 480,
                 maxHeight: .infinity,
                 alignment: .center
             )

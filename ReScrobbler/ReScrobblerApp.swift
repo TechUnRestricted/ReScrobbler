@@ -12,6 +12,10 @@ let baseUrl = "https://ws.audioscrobbler.com/2.0/?api_key=" + apiKey + "&format=
 
 let defaults = UserDefaults.standard
 
+let fileManager = try? FileManager.default.url(for: .documentDirectory,
+                                          in: .userDomainMask,
+                                          appropriateFor: nil,
+                                          create: false)
 
 
 extension UserDefaults {

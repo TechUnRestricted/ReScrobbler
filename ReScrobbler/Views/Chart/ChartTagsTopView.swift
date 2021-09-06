@@ -7,30 +7,63 @@
 
 import SwiftUI
 
-func getData() -> getTopTags.jsonStruct?{
+fileprivate func getData() -> getTopTags.jsonStruct?{
     /**
-        Getting data from URL (online) or from defaults (offline)
+        Getting data from URL (online) or from Container data (offline)
      */
-    if let savedJson = defaults.object(forKey: "SavedTagsTop") as? Data {
-        if let loadedJson = try? JSONDecoder().decode(getTopTags.jsonStruct.self, from: savedJson) {
-            print("[LOG]:> {TagsTopView} Loaded local JSON struct from <defaults>.")
-            return loadedJson
-        }
-    }
-    else{
+    let jsonFolder = fileManager?.appendingPathComponent("jsonStructures")
+    let jsonFile = jsonFolder?.appendingPathComponent("ChartTagsTop.json")
+    
+     func loadFromInternet() -> getTopTags.jsonStruct?{
         if let jsonFromInternet = try? JSONDecoder().decode(getTopTags.jsonStruct.self, from:getJSONFromUrl("method=chart.gettopTags&limit=100")){
             print("[LOG]:> {TagsTopView} Loaded JSON struct from <internet>")
             if let encoded = try? JSONEncoder().encode(jsonFromInternet) {
-                defaults.set(encoded, forKey: "SavedTagsTop")
+                if let jsonFile = jsonFile{
+                    do {
+                        try encoded.write(to: jsonFile)
+                        print("[LOG]:> JSON <ChartTagsTop.json> has been saved.")
+
+                    } catch {
+                        print("[ERROR]:> Can't write <ChartTagsTop.json>. {Message: \(error)}")
+                    }
+                }
             }
             return jsonFromInternet
         }
         else{
             print("[LOG]:> An error has occured while getting data from Internet.")
+            return nil
         }
     }
-    return nil
+    
+    do {
+        if let jsonFolder = jsonFolder{
+            try FileManager.default.createDirectory(atPath: jsonFolder.path, withIntermediateDirectories: true, attributes: nil)
+            print("[LOG]:> Folder <jsonStructures> has been created.")
+        }
+    } catch {
+        print("[ERROR]:> Can't create folder <jsonStructures>. {Message: \(error)}")
+    }
+    
+    print(jsonFolder?.path ?? "[[Can't get path]]")
+
+    if let jsonFile = jsonFile, FileManager.default.fileExists(atPath: jsonFile.path) {
+
+        do{
+            let json = try JSONDecoder().decode(getTopTags.jsonStruct.self, from: Data(contentsOf: jsonFile))
+            print("[LOG]:> Loaded local JSON struct from <ChartTagsTop.json>.")
+            return json
+        }
+        catch{
+            print("[ERROR]:> Can't load <ChartTagsTop.json> from App Container. {Message: \(error)}")
+            return loadFromInternet()
+        }
+    }
+    else{
+       return loadFromInternet()
+    }
 }
+
 
 struct ChartTagsTopView: View {
     
