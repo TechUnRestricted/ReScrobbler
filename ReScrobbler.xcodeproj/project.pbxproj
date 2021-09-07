@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0405219726D576EE00BFF894 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 0405219626D576EE00BFF894 /* Introspect */; };
-		0413E20F26DFE72800BD37D5 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0413E20E26DFE72800BD37D5 /* ImageLoader.swift */; };
 		04A1E00A26D94F5600088711 /* CustomButtonViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A1E00926D94F5600088711 /* CustomButtonViews.swift */; };
 		04A1E00C26D9514A00088711 /* getInfoArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A1E00B26D9514A00088711 /* getInfoArtist.swift */; };
+		04D1CC2426E7949500F22541 /* UserTopAlbumsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1CC2326E7949500F22541 /* UserTopAlbumsView.swift */; };
 		D64F79942689FA4300DE053E /* getTopTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F79932689FA4300DE053E /* getTopTracks.swift */; };
 		D64F7998268A07A300DE053E /* ChartArtistsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F7997268A07A300DE053E /* ChartArtistsTopView.swift */; };
 		D64F799A268A081700DE053E /* ChartTracksTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F7999268A081700DE053E /* ChartTracksTopView.swift */; };
@@ -24,9 +24,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0413E20E26DFE72800BD37D5 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		04A1E00926D94F5600088711 /* CustomButtonViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonViews.swift; sourceTree = "<group>"; };
 		04A1E00B26D9514A00088711 /* getInfoArtist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getInfoArtist.swift; sourceTree = "<group>"; };
+		04D1CC2326E7949500F22541 /* UserTopAlbumsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTopAlbumsView.swift; sourceTree = "<group>"; };
 		D64F79932689FA4300DE053E /* getTopTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getTopTracks.swift; sourceTree = "<group>"; };
 		D64F7997268A07A300DE053E /* ChartArtistsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartArtistsTopView.swift; sourceTree = "<group>"; };
 		D64F7999268A081700DE053E /* ChartTracksTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartTracksTopView.swift; sourceTree = "<group>"; };
@@ -62,12 +62,21 @@
 			path = CustomViews;
 			sourceTree = "<group>";
 		};
+		04D1CC2226E7945D00F22541 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				04D1CC2326E7949500F22541 /* UserTopAlbumsView.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		D64F7995268A073200DE053E /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				04A1E00626D94E9300088711 /* CustomViews */,
 				D64F7996268A073E00DE053E /* Chart */,
 				D66DA2BE268246B400D12BB7 /* ContentView.swift */,
+				04D1CC2226E7945D00F22541 /* User */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -101,7 +110,6 @@
 		D66DA2BB268246B400D12BB7 /* ReScrobbler */ = {
 			isa = PBXGroup;
 			children = (
-				0413E20E26DFE72800BD37D5 /* ImageLoader.swift */,
 				D66DA2BC268246B400D12BB7 /* ReScrobblerApp.swift */,
 				D64F7995268A073200DE053E /* Views */,
 				D66DA2D026824DFD00D12BB7 /* Json Structures */,
@@ -208,11 +216,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D64F79942689FA4300DE053E /* getTopTracks.swift in Sources */,
+				04D1CC2426E7949500F22541 /* UserTopAlbumsView.swift in Sources */,
 				D6D30BBD268A677100936133 /* ChartTagsTopView.swift in Sources */,
 				D66DA2BF268246B400D12BB7 /* ContentView.swift in Sources */,
 				04A1E00C26D9514A00088711 /* getInfoArtist.swift in Sources */,
 				D64F7998268A07A300DE053E /* ChartArtistsTopView.swift in Sources */,
-				0413E20F26DFE72800BD37D5 /* ImageLoader.swift in Sources */,
 				D66DA2D226824DFD00D12BB7 /* getTopArtists.swift in Sources */,
 				D64F799A268A081700DE053E /* ChartTracksTopView.swift in Sources */,
 				D6D30BBB268A66AB00936133 /* getTopTags.swift in Sources */,

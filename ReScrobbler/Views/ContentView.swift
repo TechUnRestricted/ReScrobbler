@@ -91,7 +91,7 @@ struct ContentView: View {
                 ChartTracksTopView().tag("Chart.Tracks")
                 ChartTagsTopView().tag("Chart.Tags")
                 /* Section: Yours */
-                YoursAlbumsView().tag("Yours.Albums")
+                UserTopAlbums().tag("Yours.Albums")
             }.introspectTabView{ property in
                 /* Using Introspect module (master)
                  to disable TabView stock styling */
@@ -103,16 +103,6 @@ struct ContentView: View {
     }
 }
 
-struct YoursAlbumsView: View {
-    
-    var body: some View {
-        VStack{
-            AlbumCard(imageUrl: "https://lastfm.freetls.fastly.net/i/u/300x300/e8048f782acf8eb9e611dc82346faa6c.png", artist: "Tessa Violet", album: "Bad Ideas")
-
-        }
-    }
-    
-}
 
 
 

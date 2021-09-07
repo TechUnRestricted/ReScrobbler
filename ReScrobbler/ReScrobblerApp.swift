@@ -118,7 +118,14 @@ struct ReScrobblerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-        }.commands {
+                .frame(
+                minWidth: 680,
+                idealWidth: 960,
+                maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/,
+                minHeight: 420,
+                idealHeight: 510,
+                maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+        }/*.commands {
             
             CommandGroup(after: .systemServices) {
                 Button(action: {
@@ -130,7 +137,7 @@ struct ReScrobblerApp: App {
                 }
             }
             
-        }
+        }*/
     }
     
     
