@@ -11,6 +11,7 @@
 		04A1E00A26D94F5600088711 /* CustomButtonViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A1E00926D94F5600088711 /* CustomButtonViews.swift */; };
 		04A1E00C26D9514A00088711 /* getInfoArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A1E00B26D9514A00088711 /* getInfoArtist.swift */; };
 		04D1CC2426E7949500F22541 /* UserTopAlbumsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1CC2326E7949500F22541 /* UserTopAlbumsView.swift */; };
+		04D1CC4626E9389E00F22541 /* userGetTopAlbums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1CC4526E9389E00F22541 /* userGetTopAlbums.swift */; };
 		D64F79942689FA4300DE053E /* getTopTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F79932689FA4300DE053E /* getTopTracks.swift */; };
 		D64F7998268A07A300DE053E /* ChartArtistsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F7997268A07A300DE053E /* ChartArtistsTopView.swift */; };
 		D64F799A268A081700DE053E /* ChartTracksTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F7999268A081700DE053E /* ChartTracksTopView.swift */; };
@@ -27,6 +28,7 @@
 		04A1E00926D94F5600088711 /* CustomButtonViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonViews.swift; sourceTree = "<group>"; };
 		04A1E00B26D9514A00088711 /* getInfoArtist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getInfoArtist.swift; sourceTree = "<group>"; };
 		04D1CC2326E7949500F22541 /* UserTopAlbumsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTopAlbumsView.swift; sourceTree = "<group>"; };
+		04D1CC4526E9389E00F22541 /* userGetTopAlbums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userGetTopAlbums.swift; sourceTree = "<group>"; };
 		D64F79932689FA4300DE053E /* getTopTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getTopTracks.swift; sourceTree = "<group>"; };
 		D64F7997268A07A300DE053E /* ChartArtistsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartArtistsTopView.swift; sourceTree = "<group>"; };
 		D64F7999268A081700DE053E /* ChartTracksTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartTracksTopView.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				D64F79932689FA4300DE053E /* getTopTracks.swift */,
 				D6D30BBA268A66AB00936133 /* getTopTags.swift */,
 				04A1E00B26D9514A00088711 /* getInfoArtist.swift */,
+				04D1CC4526E9389E00F22541 /* userGetTopAlbums.swift */,
 			);
 			path = "Json Structures";
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				D64F79942689FA4300DE053E /* getTopTracks.swift in Sources */,
 				04D1CC2426E7949500F22541 /* UserTopAlbumsView.swift in Sources */,
 				D6D30BBD268A677100936133 /* ChartTagsTopView.swift in Sources */,
+				04D1CC4626E9389E00F22541 /* userGetTopAlbums.swift in Sources */,
 				D66DA2BF268246B400D12BB7 /* ContentView.swift in Sources */,
 				04A1E00C26D9514A00088711 /* getInfoArtist.swift in Sources */,
 				D64F7998268A07A300DE053E /* ChartArtistsTopView.swift in Sources */,
