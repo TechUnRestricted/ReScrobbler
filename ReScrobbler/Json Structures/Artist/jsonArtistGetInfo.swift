@@ -5,7 +5,7 @@
 //  Created on 27.08.2021.
 //
 
-class getInfoArtist{
+class jsonArtistGetInfo{
     struct jsonStruct: Codable {
         let artist: WelcomeArtist?
     }

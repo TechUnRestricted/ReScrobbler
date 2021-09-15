@@ -6,7 +6,7 @@
 //
 
 
-class getTopTracks {
+class jsonChartGetTopTracks {
     
     struct jsonStruct: Codable {
         let tracks: Tracks?

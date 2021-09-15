@@ -8,38 +8,15 @@
 import SwiftUI
 
 
-
-fileprivate func getData(username : String) -> userGetTopAlbums.jsonStruct?{
-    if let jsonFromInternet = try? JSONDecoder().decode(userGetTopAlbums.jsonStruct.self, from:getJSONFromUrl("method=user.gettopalbums&user="+username.urlEncoded!+"&limit=10")){
-       print("[LOG]:> {UserTopAlbumsView} Loaded JSON struct from <internet>")
-       /*if let encoded = try? JSONEncoder().encode(jsonFromInternet) {
-           if let jsonFile = jsonFile{
-               do {
-                   try encoded.write(to: jsonFile)
-                   print("[LOG]:> JSON <ChartTagsTop.json> has been saved.")
-
-               } catch {
-                   print("[ERROR]:> Can't write <ChartTagsTop.json>. {Message: \(error)}")
-               }
-           }
-       }*/
-       return jsonFromInternet
-   }
-   else{
-       print("[LOG]:> An error has occured while getting data from Internet.")
-       return nil
-   }
-}
-
 struct UserTopAlbumsGrid: View {
     var userNameInput : String
-
+    
     var body: some View {
-        
-        if let albumsArray = getData(username: userNameInput)?.topalbums?.album{
+        if let albumsArray = getUserTopAlbums(user: userNameInput, limit: 10)?.topalbums?.album{
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 500))]){
-                ForEach(0..<albumsArray.count) { index in
+                ForEach(0..<albumsArray.count, id: \.self) { index in
                     AlbumCard(imageUrl: (albumsArray[index].image?.last?.text)!, artist: (albumsArray[index].artist?.name)!, album: albumsArray[index].name!)
+                    
                 }
             }
         }
@@ -50,9 +27,9 @@ struct UserTopAlbumsGrid: View {
 struct UserTopAlbums: View {
     @State var userNameInput : String = ""
     @State var confirmedUserNameInput : String = ""
-
+    
     var body: some View {
-       // let jsonFromInternet = try? JSONDecoder().decode(userGetTopAlbums.jsonStruct.self, from:getJSONFromUrl("method=user.gettopalbums&user=eminem&limit=10")).topalbums?.album
+        
         ScrollView(.vertical){
             VStack{
                 Text("""
@@ -75,18 +52,9 @@ struct UserTopAlbums: View {
                         Image(systemName: "magnifyingglass")
                     }
                 }
-                
-                UserTopAlbumsGrid(userNameInput: confirmedUserNameInput)
-                
-                /*
-                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 500))]){
-                 AlbumCard(imageUrl: "https://lastfm.freetls.fastly.net/i/u/300x300/61b269414d3fa768c56e5e00fa9f8588.jpg", artist: "Dua Lipa", album: "Future Nostalgia")
-                 AlbumCard(imageUrl: "https://lastfm.freetls.fastly.net/i/u/300x300/48770963661b4a895dba1e9ab5091ec7.png", artist: "Melanie Martinez", album: "Cry Baby")
-                 AlbumCard(imageUrl: "https://lastfm.freetls.fastly.net/i/u/300x300/e8048f782acf8eb9e611dc82346faa6c.png", artist: "Tessa Violet", album: "Bad Ideas")
-                 AlbumCard(imageUrl: "https://lastfm.freetls.fastly.net/i/u/300x300/046fabe60696270614fec381ea891521.jpg", artist: "Fergie", album: "Double Dutchess")
-                 AlbumCard(imageUrl: "https://lastfm.freetls.fastly.net/i/u/300x300/726cd5d722886758f79eddac6c3249d8.jpg", artist: "Marina", album: "Electra Heart (Deluxe)")
-                 AlbumCard(imageUrl: "https://lastfm.freetls.fastly.net/i/u/300x300/9bc4e8d03571689a6a7e2c82707fc566.jpg", artist: "Allie X", album: "Cape God")
-                 }*/
+                if confirmedUserNameInput != ""{
+                    UserTopAlbumsGrid(userNameInput: confirmedUserNameInput)
+                }
             }.padding()
         }
     }
@@ -98,7 +66,6 @@ struct AlbumCard: View {
     var artist: String
     var album: String
     @Environment(\.colorScheme) var colorScheme
-    
     
     
     var body: some View {

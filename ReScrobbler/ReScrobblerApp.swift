@@ -8,7 +8,7 @@
 import SwiftUI
 
 let apiKey = "b33ac675651abec66c08e3d4cba063c6"
-let baseUrl = "https://ws.audioscrobbler.com/2.0/?api_key=" + apiKey + "&format=json&"
+let baseUrl = "https://ws.audioscrobbler.com/2.0/?api_key=" + apiKey + "&format=json&method="
 
 let defaults = UserDefaults.standard
 

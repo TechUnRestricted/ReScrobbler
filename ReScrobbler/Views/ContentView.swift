@@ -21,6 +21,7 @@ struct ContentView: View {
     @State var tabSelectionHistory : [String] = []
     @State var tabOffset : Int = 0
     @State private var tabSelection: String = defaultTabSelection
+    
     func changeScreen(tag: String) {
         switch tag {
         case "Go.Left":
@@ -43,7 +44,6 @@ struct ContentView: View {
         }
     }
     var body: some View {
-        
         NavigationView {
             List (/* Using custom "selection" handler */) {
                 Section(header: Text("Chart").bold().font(.title)) {
@@ -98,6 +98,7 @@ struct ContentView: View {
                 property.tabPosition = .none
                 property.tabViewBorderType = .none
             }
+            .frame(maxWidth: 1300)
         }
         
     }

@@ -6,7 +6,7 @@
 //
 
 
-class userGetTopAlbums{
+class jsonUserGetTopAlbums{
 
     // MARK: - Welcome
     struct jsonStruct: Codable {

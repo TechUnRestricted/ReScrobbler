@@ -5,7 +5,7 @@
 //  Created on 28.06.2021.
 //
 
-class getTopTags {
+class jsonChartGetTopTags {
     struct jsonStruct: Codable {
         let tags: Tags?
     }

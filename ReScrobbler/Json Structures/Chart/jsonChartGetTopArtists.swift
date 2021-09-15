@@ -5,7 +5,7 @@
 //  Created on 11.06.2021.
 //
 
-class getTopArtists {
+class jsonChartGetTopArtists {
     struct jsonStruct: Codable {
         let artists: Artists?
     }
