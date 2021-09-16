@@ -96,7 +96,7 @@ struct ArtistInfoPopUp: View{
                                 .padding(.leading, 15.0)
                                 .padding(.bottom, 0.5)
                             VStack(spacing: 5.0){
-                                ForEach(0..<similarArtistsFormatted.count){ index in
+                                ForEach(0..<similarArtistsFormatted.count, id: \.self){ index in
                                     SimilarArtistButton(artistName: similarArtistsFormatted[index] ?? "Unknown Artist", index: index+1, action: {})
                                 }
                             }

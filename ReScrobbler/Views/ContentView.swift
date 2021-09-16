@@ -56,6 +56,7 @@ struct ContentView: View {
                 Section(header: Text("Yours").bold().font(.title)) {
                     VStack(){
                         SidebarButton(title: "Albums", tag: "Yours.Albums", image: "rectangle.stack", action: {changeScreen(tag: "Yours.Albums")}, currentTab: $tabSelection)
+                        SidebarButton(title: "Tracks", tag: "Yours.Tracks", image: "music.note", action: {changeScreen(tag: "Yours.Tracks")}, currentTab: $tabSelection)
                     }
                 }
             }.listStyle(SidebarListStyle())
@@ -91,7 +92,8 @@ struct ContentView: View {
                 ChartTracksTopView().tag("Chart.Tracks")
                 ChartTagsTopView().tag("Chart.Tags")
                 /* Section: Yours */
-                UserTopAlbums().tag("Yours.Albums")
+                UserTopAlbumsView().tag("Yours.Albums")
+                UserTopTracksView().tag("Yours.Tracks")
             }.introspectTabView{ property in
                 /* Using Introspect module (master)
                  to disable TabView stock styling */
