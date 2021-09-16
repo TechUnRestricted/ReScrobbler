@@ -1,14 +1,14 @@
 //
-//  UserTopAlbums.swift
+//  UserTopArtistsView.swift
 //  ReScrobbler
 //
-//  Created by Mac on 07.09.2021.
+//  Created by Mac on 16.09.2021.
 //
 
 import SwiftUI
 
 
-struct UserTopAlbumsView: View {
+struct UserTopArtistsView: View {
     @State var userNameInput : String = ""
     @State var confirmedUserNameInput : String = ""
     
@@ -16,6 +16,7 @@ struct UserTopAlbumsView: View {
         
         ScrollView(.vertical){
             VStack{
+                VStack(){
                 Text("""
                     Find your stats
                     by your Last.Fm profile
@@ -24,6 +25,7 @@ struct UserTopAlbumsView: View {
                     .fixedSize()
                     .font(.system(size: 30))
                     .opacity(0.9)
+                
                 HStack{
                     TextField("Your Last.Fm profile User Name", text: $userNameInput, onCommit: {
                         confirmedUserNameInput = userNameInput
@@ -36,18 +38,17 @@ struct UserTopAlbumsView: View {
                         Image(systemName: "magnifyingglass")
                     }
                 }
+                }.padding()
                 if confirmedUserNameInput != ""{
-                    UserTopAlbumsEntriesView(userNameInput: confirmedUserNameInput, limit: 10)
+                    UserTopArtistsEntriesView(userNameInput: confirmedUserNameInput, limit: 100)
                 }
-            }.padding()
+            }
         }
     }
-    
 }
 
-
-struct UserTopAlbums_Previews: PreviewProvider {
+struct UserTopArtistsView_Previews: PreviewProvider {
     static var previews: some View {
-        UserTopAlbumsView()
+        UserTopArtistsView()
     }
 }

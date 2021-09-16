@@ -16,7 +16,7 @@ fileprivate let vGridLayout = [
     GridItem(.flexible(), spacing: 0)
 ]
 
-struct ArtistsTopEntries: View {
+struct ChartTopArtistsEntriesView: View {
     @State var showingModal = false
     
     var limit : Int
@@ -56,6 +56,7 @@ struct ArtistsTopEntries: View {
                                 .frame(height: 50)
                                 .overlay(
                                     Text("Listeners: \(jsonSimplified[value].listeners?.roundedWithAbbreviations ?? "Unknown")")
+                                    
                                 )
                             
                             Rectangle()

@@ -1,24 +1,25 @@
 //
-//  TracksTopEntriesView.swift
+//  UserTopTracksEntriesView.swift
 //  ReScrobbler
 //
-//  Created on 15.09.2021.
+//  Created by Mac on 16.09.2021.
 //
 
 import SwiftUI
 
 fileprivate let vGridLayout = [
     GridItem(.flexible(maximum: 80), spacing: 0),
-    GridItem(.flexible(), spacing: 0),
-    GridItem(.flexible(), spacing: 0),
+    GridItem(.flexible(maximum: 500), spacing: 0),
     GridItem(.flexible(), spacing: 0)
 ]
 
-struct TracksTopEntries: View {
+struct UserTopTracksEntriesView: View {
+    var userNameInput : String
     var limit : Int
     
-    var body: some View {
-        if let json = getChartTracksTop(limit: limit), let jsonSimplified = json.tracks?.track{
+    var body: some View{
+        if let json = getUserTopTracks(user: userNameInput, limit: limit), let jsonSimplified = json.toptracks?.track{
+        
             LazyVGrid(columns: vGridLayout, spacing: 0) {
                 ForEach(0 ..< (jsonSimplified.count), id: \.self) { value in
                     let currentColor : Color = {
@@ -36,18 +37,22 @@ struct TracksTopEntries: View {
                             .overlay(
                                 Text("\(value+1)")
                                     .font(.title2)
-                                
                             )
                         
                         Rectangle()
                             .foregroundColor(currentColor)
                             .frame(height: 60)
                             .overlay(
-                                VStack(){
-                                    Text(jsonSimplified[value].name ?? "Unknown Track")
-                                        .bold()
-                                    Text((jsonSimplified[value].artist?.name) ?? "Unknown Artist")
+                                VStack{
+                                Text(jsonSimplified[value].name ?? "Unknown Track")
+                                    .bold()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                                Text(jsonSimplified[value].artist?.name ?? "Unknown Artist")
                                         .fontWeight(.light)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                                    
                                 }
                             )
                         
@@ -55,19 +60,16 @@ struct TracksTopEntries: View {
                             .foregroundColor(currentColor)
                             .frame(height: 60)
                             .overlay(
-                                Text("Listeners: \(jsonSimplified[value].listeners?.roundedWithAbbreviations ?? "Unknown")")
-                            )
-                        
-                        Rectangle()
-                            .foregroundColor(currentColor)
-                            .frame(height: 60)
-                            .overlay(
-                                Text("Play Count: \(jsonSimplified[value].playcount?.roundedWithAbbreviations ?? "Unknown")")
+                                Text("Play Count: \(jsonSimplified[value].playcount ?? "Unknown")")
+                                            .fontWeight(.light)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+
                             )
                         
                     }
                 }
             }
         }
+     
     }
 }

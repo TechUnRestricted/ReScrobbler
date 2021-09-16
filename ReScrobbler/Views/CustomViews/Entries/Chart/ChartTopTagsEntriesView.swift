@@ -12,7 +12,7 @@ fileprivate let vGridLayout = [
     GridItem(.flexible(), spacing: 0)
 ]
 
-struct TagsTopEntries: View {
+struct ChartTopTagsEntriesView: View {
     var limit : Int
     
     var body: some View {

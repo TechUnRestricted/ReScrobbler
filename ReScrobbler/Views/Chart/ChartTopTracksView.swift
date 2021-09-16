@@ -9,12 +9,12 @@ import SwiftUI
 
 
 
-struct ChartTracksTopView: View {
+struct ChartTopTracksView: View {
     
     var body: some View {
         ScrollView(.vertical){
             VStack{
-                TracksTopEntries(limit: 100)
+                ChartTopTracksEntriesView(limit: 100)
             }
         }
     }

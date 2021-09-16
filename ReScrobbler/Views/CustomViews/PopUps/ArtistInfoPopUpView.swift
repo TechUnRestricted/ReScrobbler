@@ -82,7 +82,7 @@ struct ArtistInfoPopUp: View{
                                 .padding(.leading, 15.0)
                                 .padding(.bottom, 0.5)
                             
-                            Text(artistInfo?.bio?.summary?.withoutHtmlTags ?? "No information provided")
+                            Text(artistInfo?.bio?.summary?.withoutHtmlTags.replacingOccurrences(of: "Read more on Last.fm", with: "") ?? "No information provided")
                                 .font(.system(size: 15))
                                 .fontWeight(.light)
                                 .fixedSize(horizontal: false, vertical: true)

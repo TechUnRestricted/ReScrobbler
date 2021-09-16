@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct UserTopAlbumsGridEntriesView: View {
+struct UserTopAlbumsEntriesView: View {
     var userNameInput : String
-
+    var limit : Int
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        if let albumsArray = getUserTopAlbums(user: userNameInput, limit: 10)?.topalbums?.album{
+        if let albumsArray = getUserTopAlbums(user: userNameInput, limit: limit)?.topalbums?.album{
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 500))]){
                 ForEach(0..<albumsArray.count, id: \.self) { index in
                     
