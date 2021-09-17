@@ -11,7 +11,7 @@ import SwiftUI
 struct UserTopAlbumsView: View {
     @State var userNameInput : String = ""
     @State var confirmedUserNameInput : String = ""
-    
+    var username : String
     var body: some View {
         
         ScrollView(.vertical){
@@ -39,6 +39,9 @@ struct UserTopAlbumsView: View {
                 if confirmedUserNameInput != ""{
                     UserTopAlbumsEntriesView(userNameInput: confirmedUserNameInput, limit: 10)
                 }
+                else if username != ""{
+                    UserTopAlbumsEntriesView(userNameInput: username, limit: 10)
+                }
             }.padding()
         }
     }
@@ -48,6 +51,6 @@ struct UserTopAlbumsView: View {
 
 struct UserTopAlbums_Previews: PreviewProvider {
     static var previews: some View {
-        UserTopAlbumsView()
+        UserTopAlbumsView(username: "eminem")
     }
 }

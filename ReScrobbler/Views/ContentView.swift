@@ -9,7 +9,24 @@ import SwiftUI
 import Introspect
 
 
+struct ProfileIconView: View{
+    var username : String = ""
 
+    var body: some View{
+        
+            if let url = URL(string: getUserInfo(user: username)?.user?.image?.last?.text ?? ""), let image = NSImage(contentsOf: url), username != ""{
+                Image(nsImage: image)
+                    .resizable()
+                    .clipShape(Circle())
+
+            }
+            else {
+                Image(systemName: "person.crop.circle.fill")
+                    .font(.system(size: 100))
+            }
+        
+    }
+}
 
 var defaultTabSelection : String = "Chart.Artists"
 
@@ -39,13 +56,42 @@ struct ContentView: View {
                 tabSelectionHistory.append(tag)
                 tabSelection = tag
             } else {
-                print("[Failure]:> <\(tag)>")
+                print("[LOG]:> Not changing screen from <\(tag)>")
             }
         }
     }
+    
+    @State var showModal : Bool = false
+    @AppStorage("username") var username : String = ""
+
+
     var body: some View {
+        
+        
+        
         NavigationView {
             List (/* Using custom "selection" handler */) {
+                    Button(action: {
+                        showModal = true
+                    }) {
+                        VStack{
+                            ProfileIconView(username: username)
+                                .frame(width: 105, height: 105)
+                            
+                                
+                            Text(username != "" ? username : "Sign in")
+                        }.contentShape(Rectangle())
+                        
+                    }.buttonStyle(PlainButtonStyle())
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding()
+                    .sheet(
+                        isPresented: $showModal,
+                        content: {AuthenticatePopUp(showingModal: $showModal, confirmedUsername: $username)
+                            
+                        }
+                    )
+                    
                 Section(header: Text("Chart").bold().font(.title)) {
                     VStack(){
                         SidebarButton(title: "Artists", tag: "Chart.Artists", image: "music.mic", action: {changeScreen(tag: "Chart.Artists")}, currentTab: $tabSelection)
@@ -55,12 +101,14 @@ struct ContentView: View {
                 }
                 Section(header: Text("Yours").bold().font(.title)) {
                     VStack(){
-                        SidebarButton(title: "Albums", tag: "Yours.Albums", image: "rectangle.stack", action: {changeScreen(tag: "Yours.Albums")}, currentTab: $tabSelection)
-                        SidebarButton(title: "Tracks", tag: "Yours.Tracks", image: "music.note", action: {changeScreen(tag: "Yours.Tracks")}, currentTab: $tabSelection)
                         SidebarButton(title: "Artists", tag: "Yours.Artists", image: "music.mic", action: {changeScreen(tag: "Yours.Artists")}, currentTab: $tabSelection)
+                        SidebarButton(title: "Tracks", tag: "Yours.Tracks", image: "music.note", action: {changeScreen(tag: "Yours.Tracks")}, currentTab: $tabSelection)
+                        SidebarButton(title: "Albums", tag: "Yours.Albums", image: "rectangle.stack", action: {changeScreen(tag: "Yours.Albums")}, currentTab: $tabSelection)
                     }
                 }
-            }.listStyle(SidebarListStyle())
+            }
+            .listStyle(SidebarListStyle())
+            .frame(minWidth: 180)
             .toolbar {
                 ToolbarItem(placement: .automatic) {
                     Button(action: {
@@ -88,14 +136,15 @@ struct ContentView: View {
             }
             
             TabView(selection: $tabSelection){
+                
                 /* Section: Chart */
                 ChartTopArtistsView().tag("Chart.Artists")
                 ChartTopTracksView().tag("Chart.Tracks")
                 ChartTopTagsView().tag("Chart.Tags")
                 /* Section: Yours */
-                UserTopAlbumsView().tag("Yours.Albums")
-                UserTopTracksView().tag("Yours.Tracks")
-                UserTopArtistsView().tag("Yours.Artists")
+                UserTopAlbumsView(username: username).tag("Yours.Albums")
+                UserTopTracksView(username: username).tag("Yours.Tracks")
+                UserTopArtistsView(username: username).tag("Yours.Artists")
             }.introspectTabView{ property in
                 /* Using Introspect module (master)
                  to disable TabView stock styling */
