@@ -16,10 +16,18 @@ fileprivate let vGridLayout = [
 
 struct ChartTopTracksEntriesView: View {
     var limit : Int
+    @StateObject var receiver = ChartTopTracks()
     
     var body: some View {
-        if let json = getChartTracksTop(limit: limit), let jsonSimplified = json.tracks?.track{
-            LazyVGrid(columns: vGridLayout, spacing: 0) {
+        if (receiver.data == nil){
+            HStack(spacing: 10){
+                Text("Loading...")
+                ProgressView()
+            }
+        }
+        
+        LazyVGrid(columns: vGridLayout, spacing: 0) {
+            if let json = receiver.data, let jsonSimplified = json.tracks?.track{
                 ForEach(0 ..< (jsonSimplified.count), id: \.self) { value in
                     let currentColor : Color = {
                         if (value+1).isMultiple(of: 2){
@@ -69,6 +77,11 @@ struct ChartTopTracksEntriesView: View {
                     }
                 }
             }
-        }
+        }.onAppear(perform: {
+            if receiver.data == nil{
+                receiver.getData(limit: 100)
+            }
+            
+        })
     }
 }

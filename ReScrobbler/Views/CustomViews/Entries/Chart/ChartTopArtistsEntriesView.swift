@@ -18,13 +18,21 @@ fileprivate let vGridLayout = [
 
 struct ChartTopArtistsEntriesView: View {
     @State var showingModal = false
-    
+    @StateObject var receiver = ChartTopArtists()
+
     var limit : Int
     
     var body: some View{
-        VStack{
-            if let json = getChartArtistsTop(limit: limit), let jsonSimplified = json.artists?.artist{
-                LazyVGrid(columns: vGridLayout, spacing: 0) {
+   
+            if (receiver.data == nil){
+                HStack(spacing: 10){
+                    Text("Loading...")
+                    ProgressView()
+                }
+            }
+            LazyVGrid(columns: vGridLayout, spacing: 0) {
+
+            if let json = receiver.data, let jsonSimplified = json.artists?.artist{
                     ForEach(0 ..< (jsonSimplified.count), id: \.self) { value in
                         let currentColor : Color = {
                             if (value+1).isMultiple(of: 2){
@@ -79,14 +87,19 @@ struct ChartTopArtistsEntriesView: View {
                     }
                     
                     
-                }.sheet(
-                    isPresented: $showingModal,
-                    content: {ArtistInfoPopUp(chosenArtistName: chosenArtistName, showingModal: $showingModal) }
-                )
-            }
+                }
+
+            }.sheet(
+                isPresented: $showingModal,
+                content: {ArtistInfoPopUp(chosenArtistName: chosenArtistName, showingModal: $showingModal) }
+            ).onAppear(perform: {
+                if receiver.data == nil{
+                    receiver.getData(limit: 100)
+                }
+            })
         
     }
     
-    }
+    
     
 }
