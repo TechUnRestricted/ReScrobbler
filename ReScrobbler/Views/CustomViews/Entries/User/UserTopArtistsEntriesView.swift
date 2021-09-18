@@ -16,14 +16,21 @@ fileprivate let vGridLayout = [
 ]
 
 struct UserTopArtistsEntriesView: View{
-    var userNameInput : String
-    var limit : Int
+    @Binding var userNameInput : String
+    @Binding var limit : Int
+    @StateObject var receiver = UserTopArtists()
     
     @State var showingModal = false
 
     var body: some View{
-        if let json = getUserTopArtists(user: userNameInput, limit: limit), let jsonSimplified = json.topartists?.artist{
-            LazyVGrid(columns: vGridLayout, spacing: 0) {
+        if (receiver.data == nil){
+            HStack(spacing: 10){
+                Text("Loading...")
+                ProgressView()
+            }
+        }
+        LazyVGrid(columns: vGridLayout, spacing: 0) {
+            if let json = receiver.data, let jsonSimplified = json.topartists?.artist{
                 ForEach(0 ..< (jsonSimplified.count), id: \.self) { value in
                     let currentColor : Color = {
                         if (value+1).isMultiple(of: 2){
@@ -69,10 +76,17 @@ struct UserTopArtistsEntriesView: View{
                         
                     }
                 }
-            }.sheet(
-                isPresented: $showingModal,
-                content: {ArtistInfoPopUp(chosenArtistName: chosenArtistName, showingModal: $showingModal) }
-            )
-        }
+            }
+        }.sheet(
+            isPresented: $showingModal,
+            content: {ArtistInfoPopUp(chosenArtistName: chosenArtistName, showingModal: $showingModal) }
+        )
+        .onAppear(perform: {
+            receiver.getData(user: userNameInput)
+        })
+        .onChange(of: userNameInput, perform: { _ in
+            receiver.data = nil
+            receiver.getData(user: userNameInput)
+        })
     }
 }

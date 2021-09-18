@@ -14,13 +14,22 @@ fileprivate let vGridLayout = [
 ]
 
 struct UserTopTracksEntriesView: View {
-    var userNameInput : String
-    var limit : Int
+    @Binding var userNameInput : String
+    @Binding var limit : Int
+    @StateObject var receiver = UserTopTracks()
     
     var body: some View{
-        if let json = getUserTopTracks(user: userNameInput, limit: limit), let jsonSimplified = json.toptracks?.track{
         
-            LazyVGrid(columns: vGridLayout, spacing: 0) {
+        if (receiver.data == nil){
+            HStack(spacing: 10){
+                Text("Loading...")
+                ProgressView()
+            }
+        }
+        
+        LazyVGrid(columns: vGridLayout, spacing: 0) {
+            if let json = receiver.data, let jsonSimplified = json.toptracks?.track{
+                
                 ForEach(0 ..< (jsonSimplified.count), id: \.self) { value in
                     let currentColor : Color = {
                         if (value+1).isMultiple(of: 2){
@@ -44,14 +53,14 @@ struct UserTopTracksEntriesView: View {
                             .frame(height: 60)
                             .overlay(
                                 VStack{
-                                Text(jsonSimplified[value].name ?? "Unknown Track")
-                                    .bold()
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                                Text(jsonSimplified[value].artist?.name ?? "Unknown Artist")
+                                    Text(jsonSimplified[value].name ?? "Unknown Track")
+                                        .bold()
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    
+                                    Text(jsonSimplified[value].artist?.name ?? "Unknown Artist")
                                         .fontWeight(.light)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    
                                     
                                 }
                             )
@@ -61,15 +70,22 @@ struct UserTopTracksEntriesView: View {
                             .frame(height: 60)
                             .overlay(
                                 Text("Play Count: \(jsonSimplified[value].playcount ?? "Unknown")")
-                                            .fontWeight(.light)
+                                    .fontWeight(.light)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-
+                                
                             )
                         
                     }
                 }
             }
         }
-     
+        .onAppear(perform: {
+            receiver.getData(user: userNameInput)
+        })
+        .onChange(of: userNameInput, perform: { _ in
+            receiver.data = nil
+            receiver.getData(user: userNameInput)
+        })
+        
     }
 }

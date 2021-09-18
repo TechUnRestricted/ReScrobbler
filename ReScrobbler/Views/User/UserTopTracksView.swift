@@ -11,6 +11,7 @@ import SwiftUI
 struct UserTopTracksView: View {
     @State var userNameInput : String = ""
     @State var confirmedUserNameInput : String = ""
+    @State var showView : Bool = true
     var username : String
 
     var body: some View {
@@ -41,10 +42,10 @@ struct UserTopTracksView: View {
                 }
                 }.padding()
                 if confirmedUserNameInput != ""{
-                       UserTopTracksView(username: confirmedUserNameInput)
+                    UserTopTracksEntriesView(userNameInput: $confirmedUserNameInput, limit: .constant(100))
                 }
                 else if username != ""{
-                        UserTopTracksView(username: username)
+                    UserTopTracksEntriesView(userNameInput: .constant(username), limit: .constant(100))
                 }
             }
         }

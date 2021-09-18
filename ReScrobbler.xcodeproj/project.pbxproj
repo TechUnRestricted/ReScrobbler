@@ -145,8 +145,8 @@
 			isa = PBXGroup;
 			children = (
 				04519E1926F349F8004D2727 /* UserGetTopTracksReceiver.swift */,
-				0410188C26F24E62003030F6 /* UserGetTopAlbumsReceiver.swift */,
 				0428951426F389F700902306 /* UserGetTopArtistsReceiver.swift */,
+				0410188C26F24E62003030F6 /* UserGetTopAlbumsReceiver.swift */,
 				045CE32F26F4A2F600448F20 /* UserGetInfo.swift */,
 			);
 			path = User;
@@ -230,9 +230,9 @@
 		04D1CC2226E7945D00F22541 /* User */ = {
 			isa = PBXGroup;
 			children = (
-				04D1CC2326E7949500F22541 /* UserTopAlbumsView.swift */,
-				04519E1126F28732004D2727 /* UserTopTracksView.swift */,
 				045CE32526F39A6700448F20 /* UserTopArtistsView.swift */,
+				04519E1126F28732004D2727 /* UserTopTracksView.swift */,
+				04D1CC2326E7949500F22541 /* UserTopAlbumsView.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";

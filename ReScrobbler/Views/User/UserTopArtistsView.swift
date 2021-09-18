@@ -41,10 +41,10 @@ struct UserTopArtistsView: View {
                 }
                 }.padding()
                 if confirmedUserNameInput != ""{
-                    UserTopArtistsEntriesView(userNameInput: confirmedUserNameInput, limit: 100)
+                    UserTopArtistsEntriesView(userNameInput: $confirmedUserNameInput, limit: .constant(100))
                 }
                 else if username != ""{
-                    UserTopArtistsEntriesView(userNameInput: username, limit: 100)
+                    UserTopArtistsEntriesView(userNameInput: .constant(username), limit: .constant(100))
                 }
             }
         }

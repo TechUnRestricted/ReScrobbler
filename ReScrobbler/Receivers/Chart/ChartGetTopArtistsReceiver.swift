@@ -26,7 +26,8 @@ func getChartArtistsTop(
     let jsonFile = jsonFolder?.appendingPathComponent("ChartArtistsTop.json")
     
      func loadFromInternet() -> jsonChartGetTopArtists.jsonStruct?{
-        if let jsonFromInternet = try? JSONDecoder().decode(jsonChartGetTopArtists.jsonStruct.self, from:getJSONFromUrl("chart.gettopartists" + "&" + parameters)){
+
+        if let jsonFromInternet = try? JSONDecoder().decode(jsonChartGetTopArtists.jsonStruct.self, from:getJSONFromUrl("chart.getTopArtists" + "&" + parameters)){
             print("[LOG]:> {ArtistsTopView} Loaded JSON struct from <internet>")
             if let encoded = try? JSONEncoder().encode(jsonFromInternet) {
                 if let jsonFile = jsonFile{
