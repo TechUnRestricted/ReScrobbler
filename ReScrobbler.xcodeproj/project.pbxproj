@@ -30,9 +30,11 @@
 		045CE32A26F3AC7600448F20 /* UserTopTracksEntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045CE32926F3AC7600448F20 /* UserTopTracksEntriesView.swift */; };
 		045CE32C26F3CC5700448F20 /* AuthenticatePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045CE32B26F3CC5700448F20 /* AuthenticatePopUp.swift */; };
 		045CE32E26F4A2A900448F20 /* jsonUserGetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045CE32D26F4A2A900448F20 /* jsonUserGetInfo.swift */; };
-		045CE33026F4A2F600448F20 /* UserGetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045CE32F26F4A2F600448F20 /* UserGetInfo.swift */; };
+		045CE33026F4A2F600448F20 /* UserGetInfoReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045CE32F26F4A2F600448F20 /* UserGetInfoReceiver.swift */; };
 		04A1E00A26D94F5600088711 /* SidebarButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A1E00926D94F5600088711 /* SidebarButtonView.swift */; };
 		04A1E00C26D9514A00088711 /* jsonArtistGetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A1E00B26D9514A00088711 /* jsonArtistGetInfo.swift */; };
+		04A3C6C226F75A5B009C58F2 /* ProfileIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A3C6C126F75A5B009C58F2 /* ProfileIconView.swift */; };
+		04A3C6C426F75A9A009C58F2 /* DefaultProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A3C6C326F75A9A009C58F2 /* DefaultProfilePictureView.swift */; };
 		04D1CC2426E7949500F22541 /* UserTopAlbumsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1CC2326E7949500F22541 /* UserTopAlbumsView.swift */; };
 		04D1CC4626E9389E00F22541 /* jsonUserGetTopAlbums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1CC4526E9389E00F22541 /* jsonUserGetTopAlbums.swift */; };
 		D64F79942689FA4300DE053E /* jsonChartGetTopTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64F79932689FA4300DE053E /* jsonChartGetTopTracks.swift */; };
@@ -70,9 +72,11 @@
 		045CE32926F3AC7600448F20 /* UserTopTracksEntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTopTracksEntriesView.swift; sourceTree = "<group>"; };
 		045CE32B26F3CC5700448F20 /* AuthenticatePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatePopUp.swift; sourceTree = "<group>"; };
 		045CE32D26F4A2A900448F20 /* jsonUserGetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jsonUserGetInfo.swift; sourceTree = "<group>"; };
-		045CE32F26F4A2F600448F20 /* UserGetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGetInfo.swift; sourceTree = "<group>"; };
+		045CE32F26F4A2F600448F20 /* UserGetInfoReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGetInfoReceiver.swift; sourceTree = "<group>"; };
 		04A1E00926D94F5600088711 /* SidebarButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarButtonView.swift; sourceTree = "<group>"; };
 		04A1E00B26D9514A00088711 /* jsonArtistGetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jsonArtistGetInfo.swift; sourceTree = "<group>"; };
+		04A3C6C126F75A5B009C58F2 /* ProfileIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileIconView.swift; sourceTree = "<group>"; };
+		04A3C6C326F75A9A009C58F2 /* DefaultProfilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultProfilePictureView.swift; sourceTree = "<group>"; };
 		04D1CC2326E7949500F22541 /* UserTopAlbumsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTopAlbumsView.swift; sourceTree = "<group>"; };
 		04D1CC4526E9389E00F22541 /* jsonUserGetTopAlbums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jsonUserGetTopAlbums.swift; sourceTree = "<group>"; };
 		D64F79932689FA4300DE053E /* jsonChartGetTopTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jsonChartGetTopTracks.swift; sourceTree = "<group>"; };
@@ -147,7 +151,7 @@
 				04519E1926F349F8004D2727 /* UserGetTopTracksReceiver.swift */,
 				0428951426F389F700902306 /* UserGetTopArtistsReceiver.swift */,
 				0410188C26F24E62003030F6 /* UserGetTopAlbumsReceiver.swift */,
-				045CE32F26F4A2F600448F20 /* UserGetInfo.swift */,
+				045CE32F26F4A2F600448F20 /* UserGetInfoReceiver.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -223,6 +227,7 @@
 				0410189E26F25C88003030F6 /* Buttons */,
 				0428951126F380E900902306 /* PopUps */,
 				0417F0C026F37CF20087CCA4 /* Entries */,
+				04A3C6C126F75A5B009C58F2 /* ProfileIconView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -245,6 +250,7 @@
 				04D1CC2226E7945D00F22541 /* User */,
 				D66DA2BE268246B400D12BB7 /* ContentView.swift */,
 				045CE32B26F3CC5700448F20 /* AuthenticatePopUp.swift */,
+				04A3C6C326F75A9A009C58F2 /* DefaultProfilePictureView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -387,7 +393,7 @@
 				04519E1A26F349F8004D2727 /* UserGetTopTracksReceiver.swift in Sources */,
 				0410189D26F25C3F003030F6 /* SimilarArtistButtonView.swift in Sources */,
 				041018A626F25EA4003030F6 /* ChartTopTracksEntriesView.swift in Sources */,
-				045CE33026F4A2F600448F20 /* UserGetInfo.swift in Sources */,
+				045CE33026F4A2F600448F20 /* UserGetInfoReceiver.swift in Sources */,
 				045CE32826F3A0F900448F20 /* UserTopArtistsEntriesView.swift in Sources */,
 				D64F79942689FA4300DE053E /* jsonChartGetTopTracks.swift in Sources */,
 				04D1CC2426E7949500F22541 /* UserTopAlbumsView.swift in Sources */,
@@ -412,10 +418,12 @@
 				0428951326F388A700902306 /* jsonUserGetTopArtists.swift in Sources */,
 				04519E1626F3476D004D2727 /* UserTopAlbumsEntriesView.swift in Sources */,
 				0410189726F259CF003030F6 /* ChartGetTopTracksReceiver.swift in Sources */,
+				04A3C6C426F75A9A009C58F2 /* DefaultProfilePictureView.swift in Sources */,
 				D6D30BBB268A66AB00936133 /* jsonChartGetTopTags.swift in Sources */,
 				D66DA2BD268246B400D12BB7 /* ReScrobblerApp.swift in Sources */,
 				04A1E00A26D94F5600088711 /* SidebarButtonView.swift in Sources */,
 				041018A026F25CC1003030F6 /* ArtistInfoPopUpView.swift in Sources */,
+				04A3C6C226F75A5B009C58F2 /* ProfileIconView.swift in Sources */,
 				0410189B26F25B66003030F6 /* ColoredRoundedButtonView.swift in Sources */,
 				045CE32E26F4A2A900448F20 /* jsonUserGetInfo.swift in Sources */,
 			);

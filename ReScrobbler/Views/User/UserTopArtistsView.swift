@@ -53,6 +53,6 @@ struct UserTopArtistsView: View {
 
 struct UserTopArtistsView_Previews: PreviewProvider {
     static var previews: some View {
-        UserTopArtistsView(username: "eminem")
+       UserTopArtistsView(username: "eminem")
     }
 }

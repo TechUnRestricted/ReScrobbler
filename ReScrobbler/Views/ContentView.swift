@@ -9,24 +9,6 @@ import SwiftUI
 import Introspect
 
 
-struct ProfileIconView: View{
-    var username : String = ""
-
-    var body: some View{
-        
-            if let url = URL(string: getUserInfo(user: username)?.user?.image?.last?.text ?? ""), let image = NSImage(contentsOf: url), username != ""{
-                Image(nsImage: image)
-                    .resizable()
-                    .clipShape(Circle())
-
-            }
-            else {
-                Image(systemName: "person.crop.circle.fill")
-                    .font(.system(size: 100))
-            }
-        
-    }
-}
 
 var defaultTabSelection : String = "Chart.Artists"
 

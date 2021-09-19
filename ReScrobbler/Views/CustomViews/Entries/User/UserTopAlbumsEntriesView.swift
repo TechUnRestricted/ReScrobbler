@@ -11,10 +11,17 @@ struct UserTopAlbumsEntriesView: View {
     var userNameInput : String
     var limit : Int
     @Environment(\.colorScheme) var colorScheme
-    
+    @StateObject var receiver = UserTopAlbums()
+
     var body: some View {
-        if let albumsArray = getUserTopAlbums(user: userNameInput, limit: limit)?.topalbums?.album{
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 500))]){
+        if (receiver.data == nil){
+            HStack(spacing: 10){
+                Text("Loading...")
+                ProgressView()
+            }
+        }
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 500))]){
+        if let albumsArray = receiver.data?.topalbums?.album{
                 ForEach(0..<albumsArray.count, id: \.self) { index in
                     
                     /*
@@ -91,7 +98,15 @@ struct UserTopAlbumsEntriesView: View {
                     
                 }
             }
-        }
+        }.onAppear(perform: {
+            if receiver.data == nil{
+            receiver.getData(user: userNameInput, limit: 10)
+            }
+        })
+        .onChange(of: userNameInput, perform: { _ in
+            receiver.data = nil
+            receiver.getData(user: userNameInput, limit: 10)
+        })
         
     }
 }

@@ -10,9 +10,10 @@ import SwiftUI
 struct ArtistInfoPopUp: View{
     var chosenArtistName : String
     @Binding var showingModal : Bool
+    @StateObject var receiver = ArtistInfo()
 
     var body: some View{
-        let artistInfo = getArtistInfo(artist: chosenArtistName)?.artist
+        let artistInfo = receiver.data?.artist
         let tagsFormatted : [String?] = {
             var arr : [String] = []
             for tag in artistInfo?.tags?.tag ?? []{
@@ -34,6 +35,14 @@ struct ArtistInfoPopUp: View{
         
         ScrollView(.vertical, showsIndicators: false){
             VStack(){
+                if (receiver.data == nil){
+                    Spacer()
+                    HStack(spacing: 10){
+                        Text("Loading...")
+                        ProgressView()
+                    }
+                    Spacer()
+                }
                 HStack{
                     
                     ZStack{
@@ -75,7 +84,6 @@ struct ArtistInfoPopUp: View{
                     .opacity(0.8)
                 }
                 Group{
-                    if ((artistInfo?.bio?.summary) != nil){
                         VStack(alignment: .leading){
                             Text("About artist:")
                                 .font(.system(size: 20))
@@ -88,7 +96,6 @@ struct ArtistInfoPopUp: View{
                                 .fixedSize(horizontal: false, vertical: true)
                             
                         }.padding(.top, 10)
-                    }
                     if similarArtistsFormatted != []{
                         VStack(alignment: .leading){
                             Text("Similar artists:")
@@ -111,13 +118,12 @@ struct ArtistInfoPopUp: View{
             
         }
         .padding(.horizontal, 22.0)
-        .frame(minWidth: 200, maxWidth: 800, maxHeight: 600)
         .background(Color(NSColor.windowBackgroundColor))
         .cornerRadius(13)
         
         /*End*/
             .frame(
-                minWidth: 360,
+                minWidth: 740,
                 maxWidth: .infinity,
                 minHeight: 480,
                 maxHeight: .infinity,
@@ -133,6 +139,10 @@ struct ArtistInfoPopUp: View{
             .onExitCommand{
                 showingModal = false
             }
-    
+        .onAppear(perform: {
+            if receiver.data == nil{
+                receiver.getData(artist: chosenArtistName)
+            }
+        })
     }
 }

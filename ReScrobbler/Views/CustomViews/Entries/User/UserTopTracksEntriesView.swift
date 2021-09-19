@@ -80,7 +80,9 @@ struct UserTopTracksEntriesView: View {
             }
         }
         .onAppear(perform: {
+            if receiver.data == nil{
             receiver.getData(user: userNameInput)
+            }
         })
         .onChange(of: userNameInput, perform: { _ in
             receiver.data = nil
