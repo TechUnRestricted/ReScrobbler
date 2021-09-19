@@ -14,11 +14,11 @@ struct ProfileIconView: View{
 
     var body: some View{
         VStack{
-        if let url = URL(string: receiver.data?.user?.image?.last?.text ?? ""), let image = NSImage(contentsOf: url), username != ""{
+            if let path = receiver.data?.user?.image?.last?.text, let url = URL(string: path), let image = NSImage(contentsOf: url), username != ""{
                 Image(nsImage: image)
                     .resizable()
                     .clipShape(Circle())
-
+                
             }
             else {
                 DefaultProfilePictureView()
@@ -29,6 +29,7 @@ struct ProfileIconView: View{
             }
         })
         .onChange(of: username, perform: { chosenUsername in
+             receiver.data = nil
              receiver.getData(user: chosenUsername)
         })
 

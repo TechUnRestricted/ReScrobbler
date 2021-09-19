@@ -86,9 +86,9 @@ struct UserTopArtistsEntriesView: View{
             receiver.getData(user: userNameInput)
             }
         })
-        .onChange(of: userNameInput, perform: { _ in
+        .onChange(of: userNameInput, perform: { value in
             receiver.data = nil
-            receiver.getData(user: userNameInput)
+            receiver.getData(user: value)
         })
     }
 }

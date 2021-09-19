@@ -21,30 +21,30 @@ class ChartTopTracks: ObservableObject{
             
             let parameters = (
                 ((page   != nil) ? ("page="    + String(page!)   + "&") : "") +
-                    ((limit  != nil) ? ("limit="   + String(limit!)  + "&") : "")
+                ((limit  != nil) ? ("limit="   + String(limit!)  + "&") : "")
             )
             
             let jsonFolder = fileManager?.appendingPathComponent("jsonStructures")
-            let jsonFile = jsonFolder?.appendingPathComponent("ChartTracksTop.json")
+            let jsonFile = jsonFolder?.appendingPathComponent("ChartTopTracks.json")
             
             func loadFromInternet() -> jsonChartGetTopTracks.jsonStruct?{
                 if let jsonFromInternet = try? JSONDecoder().decode(jsonChartGetTopTracks.jsonStruct.self, from:getJSONFromUrl("chart.getTopTracks" + "&" + parameters)){
-                    print("[LOG]:> {TracksTopView} Loaded JSON struct from <internet>")
+                    print("[LOG]:> {ChartTopTracks} Loaded JSON struct from <internet>")
                     if let encoded = try? JSONEncoder().encode(jsonFromInternet) {
                         if let jsonFile = jsonFile{
                             do {
                                 try encoded.write(to: jsonFile)
-                                print("[LOG]:> JSON <ChartTracksTop.json> has been saved.")
+                                print("[LOG]:> JSON <ChartTopTracks.json> has been saved.")
                                 
                             } catch {
-                                print("[ERROR]:> Can't write <ChartTracksTop.json>. {Message: \(error)}")
+                                print("[ERROR]:> Can't write <ChartTopTracks.json>. {Message: \(error)}")
                             }
                         }
                     }
                     return jsonFromInternet
                 }
                 else{
-                    print("[LOG]:> An error has occured while getting data from Internet.")
+                    print("[LOG]:> An error has occured while getting data from <internet>.")
                     return nil
                 }
             }
@@ -64,13 +64,13 @@ class ChartTopTracks: ObservableObject{
                 
                 do{
                     let json = try JSONDecoder().decode(jsonChartGetTopTracks.jsonStruct.self, from: Data(contentsOf: jsonFile))
-                    print("[LOG]:> Loaded local JSON struct from <ChartTracksTop.json>.")
+                    print("[LOG]:> Loaded local JSON struct from <ChartTopTracks.json>.")
                     DispatchQueue.main.async {
                         self.data = json
                     }
                 }
                 catch{
-                    print("[ERROR]:> Can't load <ChartTracksTop.json> from App Container. {Message: \(error)}")
+                    print("[ERROR]:> Can't load <ChartTopTracks.json> from App Container. {Message: \(error)}")
                     DispatchQueue.main.async {
                         self.data = loadFromInternet()
                     }

@@ -21,23 +21,23 @@ class ChartTopTags: ObservableObject{
         DispatchQueue.global(qos: .background).async {
             let parameters = (
                 ((page   != nil) ? ("page="    + String(page!)   + "&") : "") +
-                    ((limit  != nil) ? ("limit="   + String(limit!)  + "&") : "")
+                ((limit  != nil) ? ("limit="   + String(limit!)  + "&") : "")
             )
             
             let jsonFolder = fileManager?.appendingPathComponent("jsonStructures")
-            let jsonFile = jsonFolder?.appendingPathComponent("ChartTagsTop.json")
+            let jsonFile = jsonFolder?.appendingPathComponent("ChartTopTags.json")
             
             func loadFromInternet() -> jsonChartGetTopTags.jsonStruct?{
                 if let jsonFromInternet = try? JSONDecoder().decode(jsonChartGetTopTags.jsonStruct.self, from:getJSONFromUrl("chart.getTopTags" + "&" + parameters)){
-                    print("[LOG]:> {TagsTopView} Loaded JSON struct from <internet>")
+                    print("[LOG]:> {ChartTopTags} Loaded JSON struct from <internet>.")
                     if let encoded = try? JSONEncoder().encode(jsonFromInternet) {
                         if let jsonFile = jsonFile{
                             do {
                                 try encoded.write(to: jsonFile)
-                                print("[LOG]:> JSON <ChartTagsTop.json> has been saved.")
+                                print("[LOG]:> JSON <ChartTopTags.json> has been saved.")
                                 
                             } catch {
-                                print("[ERROR]:> Can't write <ChartTagsTop.json>. {Message: \(error)}")
+                                print("[ERROR]:> Can't write <ChartTopTags.json>. {Message: \(error)}")
                             }
                         }
                     }
@@ -64,13 +64,13 @@ class ChartTopTags: ObservableObject{
                 
                 do{
                     let json = try JSONDecoder().decode(jsonChartGetTopTags.jsonStruct.self, from: Data(contentsOf: jsonFile))
-                    print("[LOG]:> Loaded local JSON struct from <ChartTagsTop.json>.")
+                    print("[LOG]:> Loaded local JSON struct from <ChartTopTags.json>.")
                     DispatchQueue.main.async {
                         self.data = json
                     }
                 }
                 catch{
-                    print("[ERROR]:> Can't load <ChartTagsTop.json> from App Container. {Message: \(error)}")
+                    print("[ERROR]:> Can't load <ChartTopTags.json> from App Container. {Message: \(error)}")
                     DispatchQueue.main.async {
                         self.data = loadFromInternet()
                     }

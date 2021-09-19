@@ -103,9 +103,9 @@ struct UserTopAlbumsEntriesView: View {
             receiver.getData(user: userNameInput, limit: 10)
             }
         })
-        .onChange(of: userNameInput, perform: { _ in
+        .onChange(of: userNameInput, perform: { value in
             receiver.data = nil
-            receiver.getData(user: userNameInput, limit: 10)
+            receiver.getData(user: value, limit: 10)
         })
         
     }

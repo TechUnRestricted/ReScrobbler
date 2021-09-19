@@ -30,7 +30,7 @@ class ArtistInfo: ObservableObject{
         )
         
         if let jsonFromInternet = try? JSONDecoder().decode(jsonArtistGetInfo.jsonStruct.self, from:getJSONFromUrl("artist.getInfo" + "&" + parameters)){
-            print("[LOG]:> {ArtistInfoPopUpView} Loaded JSON struct from <internet>")
+            print("[LOG]:> {ArtistGetInfo} Loaded JSON struct from <internet>.")
             
             DispatchQueue.main.async {
                 self.data = jsonFromInternet
@@ -38,7 +38,7 @@ class ArtistInfo: ObservableObject{
             
         }
         else{
-            print("[LOG]:> An error has occured while getting data from Internet.")
+            print("[LOG]:> {ArtistGetInfo} An error has occured while getting data from <internet>.")
         }
         }
     }
