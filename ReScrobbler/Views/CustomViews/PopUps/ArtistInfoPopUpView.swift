@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ArtistInfoPopUp: View{
+struct ArtistInfoPopUpView: View{
     var chosenArtistName : String
     @Binding var showingModal : Bool
     @StateObject var receiver = ArtistInfo()
@@ -119,8 +119,6 @@ struct ArtistInfoPopUp: View{
             
         }
         .padding(.horizontal, 22.0)
-        .background(Color(NSColor.windowBackgroundColor))
-        .cornerRadius(13)
         
         /*End*/
             .frame(
@@ -131,15 +129,12 @@ struct ArtistInfoPopUp: View{
                 alignment: .center
             )
             
-            .background(Color.gray.opacity(0.5))
             /*.onTapGesture {
                 withAnimation{
                     showAlert = false
                 }
             }*/
-            .onExitCommand{
-                showingModal = false
-            }
+
         .onAppear(perform: {
             if receiver.data == nil{
                 receiver.getData(artist: chosenArtistName)

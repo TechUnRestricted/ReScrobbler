@@ -125,11 +125,14 @@ struct ReScrobblerApp: App {
                 minHeight: 420,
                 idealHeight: 510,
                 maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-        }/*.commands {
+        }.commands {
             
             CommandGroup(after: .systemServices) {
                 Button(action: {
                     UserDefaults.resetDefaults()
+                    if let jsonFolder = fileManager?.appendingPathComponent("jsonStructures"){
+                    try? FileManager.default.removeItem(at: jsonFolder)
+                    }
                     print("Reset complete.")
                 }) {
                     Text("Reset all Settings")
@@ -137,7 +140,7 @@ struct ReScrobblerApp: App {
                 }
             }
             
-        }*/
+        }
     }
     
     

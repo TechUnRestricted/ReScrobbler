@@ -18,7 +18,6 @@ struct ProfileIconView: View{
                 Image(nsImage: image)
                     .resizable()
                     .clipShape(Circle())
-                
             }
             else {
                 DefaultProfilePictureView()

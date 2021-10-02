@@ -23,7 +23,7 @@ class ChartTopArtists: ObservableObject{
             
             let parameters = (
                 ((page   != nil) ? ("page="    + String(page!)   + "&") : "") +
-                    ((limit  != nil) ? ("limit="   + String(limit!)  + "&") : "")
+                ((limit  != nil) ? ("limit="   + String(limit!)  + "&") : "")
             )
             
             let jsonFolder = fileManager?.appendingPathComponent("jsonStructures")

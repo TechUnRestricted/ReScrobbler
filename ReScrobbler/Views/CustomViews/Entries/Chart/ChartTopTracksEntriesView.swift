@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+fileprivate var chosenTrackName : String = ""
+fileprivate var chosenArtistName : String = ""
+
 fileprivate let vGridLayout = [
     GridItem(.flexible(maximum: 80), spacing: 0),
     GridItem(.flexible(), spacing: 0),
@@ -17,7 +20,8 @@ fileprivate let vGridLayout = [
 struct ChartTopTracksEntriesView: View {
     var limit : Int
     @StateObject var receiver = ChartTopTracks()
-    
+    @State var showingModal = false
+
     var body: some View {
         if (receiver.data == nil){
             HStack(spacing: 10){
@@ -74,10 +78,22 @@ struct ChartTopTracksEntriesView: View {
                                 Text("Play Count: \(jsonSimplified[value].playcount?.roundedWithAbbreviations ?? "Unknown")")
                             )
                         
+                    }.onTapGesture{
+                        if let trackName = jsonSimplified[value].name, let artistName = jsonSimplified[value].artist?.name{
+                            print("Pressing -> \(trackName)")
+                            chosenTrackName = trackName
+                            chosenArtistName = artistName
+                            showingModal = true
+                        }
+                        
                     }
                 }
             }
-        }.onAppear(perform: {
+        }
+        .sheet(
+            isPresented: $showingModal,
+            content: {TrackInfoPopUpView(chosenTrackName: chosenTrackName, chosenArtistName: chosenArtistName, showingModal: $showingModal) })
+        .onAppear(perform: {
             if receiver.data == nil{
                 receiver.getData(limit: 100)
             }

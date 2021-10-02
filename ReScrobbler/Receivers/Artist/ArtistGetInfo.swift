@@ -23,7 +23,7 @@ class ArtistInfo: ObservableObject{
 
         let parameters = (
                     ((artist      != nil) ? ("artist="      + String(artist!).urlEncoded!   + "&") : "") +
-                    ((mbid        != nil) ? ("mbid="    + String(mbid!).urlEncoded!         + "&") : "") +
+                    ((mbid        != nil) ? ("mbid="        + String(mbid!).urlEncoded!         + "&") : "") +
                     ((lang        != nil) ? ("lang="        + String(lang!)                 + "&") : "") +
                     ((autocorrect != nil) ? ("autocorrect=" + String(autocorrect!)          + "&") : "") +
                     ((username    != nil) ? ("username="    + String(username!).urlEncoded! + "&") : "")

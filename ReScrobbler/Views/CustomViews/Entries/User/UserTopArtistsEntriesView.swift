@@ -79,7 +79,7 @@ struct UserTopArtistsEntriesView: View{
             }
         }.sheet(
             isPresented: $showingModal,
-            content: {ArtistInfoPopUp(chosenArtistName: chosenArtistName, showingModal: $showingModal) }
+            content: {ArtistInfoPopUpView(chosenArtistName: chosenArtistName, showingModal: $showingModal) }
         )
         .onAppear(perform: {
             if receiver.data == nil{
