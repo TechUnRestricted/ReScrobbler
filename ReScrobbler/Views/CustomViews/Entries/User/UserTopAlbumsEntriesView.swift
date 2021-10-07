@@ -7,11 +7,15 @@
 
 import SwiftUI
 
+fileprivate var chosenAlbumName : String = ""
+fileprivate var chosenArtistName : String = ""
+
 struct UserTopAlbumsEntriesView: View {
     var userNameInput : String
     var limit : Int
     @Environment(\.colorScheme) var colorScheme
     @StateObject var receiver = UserTopAlbums()
+    @State var showingModal = false
 
     var body: some View {
         if (receiver.data == nil){
@@ -52,13 +56,14 @@ struct UserTopAlbumsEntriesView: View {
                                 
                                 .cornerRadius(20)
                                 .padding()
-                            
+     
                             VStack(alignment: .leading){
                                 Group(){
                                     Text(albumsArray[index].artist?.name ?? "Unknown")
                                         .frame(alignment: .leading)
                                         .font(.title2)
                                         .padding()
+                                    
                                     
                                     Text(albumsArray[index].name ?? "Unknown")
                                         .fontWeight(.bold)
@@ -95,10 +100,16 @@ struct UserTopAlbumsEntriesView: View {
                         )
                     }
                     
+ 
+                    
                     
                 }
             }
-        }.onAppear(perform: {
+        }
+        .sheet(
+            isPresented: $showingModal,
+            content: {AlbumInfoPopUpView(chosenAlbumName: chosenAlbumName, chosenArtistName: chosenArtistName, showingModal: $showingModal) })
+        .onAppear(perform: {
             if receiver.data == nil{
             receiver.getData(user: userNameInput, limit: 10)
             }

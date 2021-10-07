@@ -13,9 +13,14 @@ fileprivate let vGridLayout = [
     GridItem(.flexible(), spacing: 0)
 ]
 
+fileprivate var chosenTrackName : String = ""
+fileprivate var chosenArtistName : String = ""
+
 struct UserTopTracksEntriesView: View {
     @Binding var userNameInput : String
     @Binding var limit : Int
+    @State var showingModal = false
+
     @StateObject var receiver = UserTopTracks()
     
     var body: some View{
@@ -75,10 +80,21 @@ struct UserTopTracksEntriesView: View {
                                 
                             )
                         
+                    }.onTapGesture{
+                        if let trackName = jsonSimplified[value].name, let artistName = jsonSimplified[value].artist?.name{
+                            print("Pressing -> \(trackName)")
+                            chosenTrackName = trackName
+                            chosenArtistName = artistName
+                            showingModal = true
+                        }
+                        
                     }
                 }
             }
         }
+        .sheet(
+            isPresented: $showingModal,
+            content: {TrackInfoPopUpView(chosenTrackName: chosenTrackName, chosenArtistName: chosenArtistName, showingModal: $showingModal) })
         .onAppear(perform: {
             if receiver.data == nil{
             receiver.getData(user: userNameInput)

@@ -1,31 +1,41 @@
 //
-//  TrackInfoPopUpView.swift
+//  AlbumInfoPopUpView.swift
 //  ReScrobbler
 //
-//  Created by Mac on 22.09.2021.
+//  Created by Mac on 04.10.2021.
 //
 
 import SwiftUI
 
-struct TrackInfoPopUpView: View {
-    var chosenTrackName : String
+import SwiftUI
+
+struct AlbumInfoPopUpView: View {
+    var chosenAlbumName : String
     var chosenArtistName : String
     @Binding var showingModal : Bool
-    @StateObject var receiver = TrackInfo()
+    @StateObject var receiver = AlbumInfo()
     
     var body: some View {
         
-        let trackInfo = receiver.data?.track
+        let albumInfo = receiver.data?.album
         let tagsFormatted : [String?] = {
             var arr : [String] = []
-            for tag in trackInfo?.toptags?.tag ?? []{
+            for tag in albumInfo?.tags?.tag ?? []{
                 arr.append(tag.name ?? "")
             }
             return arr
         }()
         
+        let tracksFormatted : [String?] = {
+            var arr : [String] = []
+            for track in albumInfo?.tracks?.track ?? []{
+                arr.append(track.name ?? "")
+            }
+            return arr
+        }()
+        
         ScrollView(.vertical, showsIndicators: false){
-            if (receiver.data == nil){
+           if (receiver.data == nil){
                 VStack{
                     Spacer()
                     HStack(spacing: 10){
@@ -35,14 +45,15 @@ struct TrackInfoPopUpView: View {
                     Spacer()
                 }
             }
+            
             VStack(){
                 ZStack(){
                     HStack{
                         Spacer()
-                        ColoredRoundedButton(title: "Close", action:{ showingModal = false}, color: Color.purple)
+                        ColoredRoundedButton(title: "Close", action:{showingModal = false}, color: Color.purple)
                     }
                     HStack(){
-                        if let path = receiver.data?.track?.album?.image?.last?.text, let url = URL(string: path), let image = NSImage(contentsOf: url){
+                        if let path = albumInfo?.image?.last?.text, let url = URL(string: path), let image = NSImage(contentsOf: url){
                             Image(nsImage: image)
                                 .resizable()
                                 .frame(width: 150, height: 150)
@@ -56,22 +67,19 @@ struct TrackInfoPopUpView: View {
                         
                             
                         VStack(alignment: .leading){
-                            HStack{
-                                Text(trackInfo?.name ?? "Unknown Track")
+                            Text(albumInfo?.name ?? "Unknown Album")
+                                    .font(.largeTitle)
+                            Text(albumInfo?.artist ?? "Unknown Artist")
                                     .font(.title)
-                                Text("(" + (trackInfo?.duration?.convertToDuration ?? "0:00") + ")")
-                            }
-                            Text(trackInfo?.album?.title ?? "Unknown Album")
-                                .font(.title2)
-                            Text(trackInfo?.artist?.name ?? "Unknown Artist")
-                                .font(.largeTitle)
+                            Text("Tracks count in album: \(tracksFormatted.count)")
+
                         }.padding()
                     }.frame(maxWidth: .infinity, alignment: .leading)
                     
                 }
                 HStack(spacing: 40){
-                    Text("Listeners: " + (trackInfo?.listeners?.roundedWithAbbreviations ?? ""))
-                    Text("Play Count: " + (trackInfo?.playcount?.roundedWithAbbreviations ?? ""))
+                    Text("Listeners: " + (albumInfo?.listeners?.roundedWithAbbreviations ?? ""))
+                    Text("Play Count: " + (albumInfo?.playcount?.roundedWithAbbreviations ?? ""))
                 }
                 .font(.system(size: 15))
                 .opacity(0.8)
@@ -79,31 +87,18 @@ struct TrackInfoPopUpView: View {
                 
                 ScrollView(.horizontal, showsIndicators: false){
                     HStack{
-                        ForEach(tagsFormatted, id: \.self){ tag in
+                       ForEach(tagsFormatted, id: \.self){ tag in
                             ColoredRoundedButton(title: tag ?? "Unknown Tag", action: {}, color: Color.random)
                         }
                     }
                 }.clipShape(Capsule())
-                if let content = trackInfo?.wiki?.summary?.withoutHtmlTags{
-                    VStack(alignment: .leading){
-                        Text("About track:")
-                            .font(.system(size: 20))
-                            .padding(.leading, 15.0)
-                            .padding(.bottom, 0.5)
-                        
-                        
-                        Text(content.withoutHtmlTags.replacingOccurrences(of: "Read more on Last.fm", with: "") )
-                            .font(.system(size: 15))
-                            .fontWeight(.light)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
+                
                 
                 
             }.padding(22.0)
             .onAppear(perform: {
                 if receiver.data == nil{
-                    receiver.getData(track: chosenTrackName, artist: chosenArtistName)
+                    receiver.getData(artist: chosenArtistName, album: chosenAlbumName)
                 }
             })
             
@@ -120,9 +115,8 @@ struct TrackInfoPopUpView: View {
         )    }
 }
 
-struct UIBenchView_Previews: PreviewProvider {
+struct AlbumInfoPopUpView_Previews: PreviewProvider {
     static var previews: some View {
-        // TrackInfoPopUpView()
-        EmptyView()
+        AlbumInfoPopUpView(chosenAlbumName: "Sour", chosenArtistName: "Olivia Rodrigo", showingModal: .constant(true))
     }
 }

@@ -61,6 +61,21 @@ extension String {
          */
         return addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
     }
+    
+    var convertToDuration: String {
+        /**
+        Converting track duration from Last.fm API ms to the MM:SS format.
+         */
+        let duration : Int = Int(self) ?? 0
+        var min : Int = 0
+        var sec : Int = 0
+
+        min = duration / (60 * 1000)
+        sec = (duration % (60 * 1000)) / 1000
+
+        return String(format: "%02d:%02d", min, sec)
+    }
+    
     var roundedWithAbbreviations: String {
         /**
          Round numbers and add "M" or "K" (millions and thousands)
