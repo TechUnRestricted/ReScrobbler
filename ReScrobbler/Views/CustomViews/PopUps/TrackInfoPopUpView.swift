@@ -84,7 +84,8 @@ struct TrackInfoPopUpView: View {
                         }
                     }
                 }.clipShape(Capsule())
-                if let content = trackInfo?.wiki?.summary?.withoutHtmlTags{
+                
+                if let wikiInfo = trackInfo?.wiki?.summary?.withoutHtmlTags{
                     VStack(alignment: .leading){
                         Text("About track:")
                             .font(.system(size: 20))
@@ -92,7 +93,7 @@ struct TrackInfoPopUpView: View {
                             .padding(.bottom, 0.5)
                         
                         
-                        Text(content.withoutHtmlTags.replacingOccurrences(of: "Read more on Last.fm", with: "") )
+                        Text(wikiInfo.withoutHtmlTags.replacingOccurrences(of: "Read more on Last.fm", with: "") )
                             .font(.system(size: 15))
                             .fontWeight(.light)
                             .fixedSize(horizontal: false, vertical: true)

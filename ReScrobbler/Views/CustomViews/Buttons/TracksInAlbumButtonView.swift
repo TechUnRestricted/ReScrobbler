@@ -1,18 +1,18 @@
 //
-//  SimilarArtistButtonView.swift
+//  TracksInAlbumButtonView.swift
 //  ReScrobbler
 //
-//  Created on 15.09.2021.
+//  Created by Mac on 07.10.2021.
 //
 
 import SwiftUI
 
-struct NumberedTitleButton: View {
+struct TracksInAlbumButton: View {
     /**
      Styled buttons for Similar Artists in info pop up
      */
-    
-    var artistName: String
+    var trackName : String
+    var trackDurationUnFormatted : Int
     var index: Int
     var action: () -> Void
     var color: Color = Color.pink
@@ -25,9 +25,13 @@ struct NumberedTitleButton: View {
                     .fontWeight(.thin)
                     .padding(.horizontal)
                     Spacer()
-                Text(artistName)
+                Text(trackName)
                     .padding([.top, .bottom, .trailing])
                 Spacer()
+                Text("\(trackDurationUnFormatted)")
+                    .font(.title)
+                    .fontWeight(.thin)
+                    .padding(.horizontal)
             }
                 
             .frame(minWidth: 50, maxWidth: .infinity)
@@ -39,4 +43,5 @@ struct NumberedTitleButton: View {
         }.buttonStyle(PlainButtonStyle())
     }
 }
+
 

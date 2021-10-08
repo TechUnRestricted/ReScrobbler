@@ -93,8 +93,37 @@ struct AlbumInfoPopUpView: View {
                     }
                 }.clipShape(Capsule())
                 
+                if let wikiContent = albumInfo?.wiki?.content{
+                    VStack(alignment: .leading){
+                        Text("About artist:")
+                            .font(.system(size: 20))
+                            .padding(.leading, 15.0)
+                            .padding(.bottom, 0.5)
+                        
+                        Text(wikiContent.withoutHtmlTags.replacingOccurrences(of: "Read more on Last.fm", with: "") )
+                            .font(.system(size: 15))
+                            .fontWeight(.light)
+                            .fixedSize(horizontal: false, vertical: true)
+                        
+                    }.padding(.top, 10)
+                }
                 
+                if tracksFormatted != []{
+                    VStack(alignment: .leading){
+                        Text("Tracks in Album:")
+                            .font(.system(size: 20))
+                            .padding(.leading, 15.0)
+                            .padding(.bottom, 0.5)
+                        VStack(spacing: 5.0){
+                            ForEach(0..<tracksFormatted.count, id: \.self){ index in
+ NumberedTitleButton(artistName: tracksFormatted[index] ?? "Unknown Track", index: index+1, action: {})
+                            }
+                        }
+                        
+                    }.padding(.top, 10)
+                }
                 
+            
             }.padding(22.0)
             .onAppear(perform: {
                 if receiver.data == nil{

@@ -80,7 +80,6 @@ struct ChartTopTracksEntriesView: View {
                         
                     }.onTapGesture{
                         if let trackName = jsonSimplified[value].name, let artistName = jsonSimplified[value].artist?.name{
-                            print("Pressing -> \(trackName)")
                             chosenTrackName = trackName
                             chosenArtistName = artistName
                             showingModal = true

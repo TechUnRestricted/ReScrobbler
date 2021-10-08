@@ -57,11 +57,7 @@ struct ContentView: View {
                         showModal = true
                     }) {
                         VStack{
-                            ProfileIconView(username: username)
-                                .frame(width: 105, height: 105)
-                            
-                                
-                            Text(username != "" ? username : "Sign in")
+                            ProfileInfoView(username: username)                            
                         }.contentShape(Rectangle())
                         
                     }.buttonStyle(PlainButtonStyle())

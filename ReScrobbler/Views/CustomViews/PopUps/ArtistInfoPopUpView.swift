@@ -84,18 +84,21 @@ struct ArtistInfoPopUpView: View{
                     .opacity(0.8)
                 }
                 Group{
+                    if let wikiInfo = artistInfo?.bio?.summary{
                         VStack(alignment: .leading){
                             Text("About artist:")
                                 .font(.system(size: 20))
                                 .padding(.leading, 15.0)
                                 .padding(.bottom, 0.5)
                             
-                            Text(artistInfo?.bio?.summary?.withoutHtmlTags.replacingOccurrences(of: "Read more on Last.fm", with: "") ?? "No information provided")
+                            Text(wikiInfo.withoutHtmlTags.replacingOccurrences(of: "Read more on Last.fm", with: ""))
                                 .font(.system(size: 15))
                                 .fontWeight(.light)
                                 .fixedSize(horizontal: false, vertical: true)
                             
                         }.padding(.top, 10)
+                    }
+                       
                     if similarArtistsFormatted != []{
                         VStack(alignment: .leading){
                             Text("Similar artists:")
@@ -104,7 +107,7 @@ struct ArtistInfoPopUpView: View{
                                 .padding(.bottom, 0.5)
                             VStack(spacing: 5.0){
                                 ForEach(0..<similarArtistsFormatted.count, id: \.self){ index in
-                                    SimilarArtistButton(artistName: similarArtistsFormatted[index] ?? "Unknown Artist", index: index+1, action: {receiver.data = nil
+                                    NumberedTitleButton(artistName: similarArtistsFormatted[index] ?? "Unknown Artist", index: index+1, action: {receiver.data = nil
                                                             receiver.getData(artist: similarArtistsFormatted[index] ?? "Unknown Artist")})
                                 }
                             }

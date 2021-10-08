@@ -11,11 +11,13 @@ fileprivate let vGridLayout = [
     GridItem(.flexible(maximum: 80), spacing: 0),
     GridItem(.flexible(), spacing: 0)
 ]
+fileprivate var chosenTag : String = ""
 
 struct ChartTopTagsEntriesView: View {
     var limit : Int
     @StateObject var receiver = ChartTopTags()
-    
+    @State var showingModal = false
+
     var body: some View {
         
         if (receiver.data == nil){
@@ -58,10 +60,20 @@ struct ChartTopTagsEntriesView: View {
                                 }
                             )
                         
+                    }.onTapGesture {
+                        if let tagName = jsonSimplified[value].name{
+                            chosenTag = tagName
+                            showingModal = true
+
+                        }
                     }
                 }
             }
-        }.onAppear(perform: {
+        }
+        .sheet(
+            isPresented: $showingModal,
+            content: {TagInfoPopUpView(chosenTag: chosenTag, showingModal: $showingModal)})
+        .onAppear(perform: {
                     if receiver.data == nil{
                         receiver.getData(limit: 100)
                     }
